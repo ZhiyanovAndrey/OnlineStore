@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OnlineStore.Api.Models;
 
 namespace OnlineStore.Api.Controllers
 {
@@ -16,6 +17,30 @@ namespace OnlineStore.Api.Controllers
             string t = $"";
             return Ok($"Привет! Сервер запущен {DateTime.Now.ToString("D")} в {DateTime.Now.ToString("t")}");
         }
+
+        private readonly OnlineStoreContext _db;
+
+        public OnlineStoreController(OnlineStoreContext db)
+        {
+            _db = db;
+        }
+
+        [HttpPost]
+        public IActionResult CreateCustomer([FromBody] Customer customerModel)
+        {
+            if (customerModel != null)
+            {
+                Customer newCustomer = new Customer(customerModel.Lastname, customerModel.Firstname, customerModel.Firdname,
+                    customerModel.Phone);
+                _db.Customers.Add(newCustomer);
+                _db.SaveChanges();
+                return Ok();
+            }
+            return BadRequest();
+        }
+
+        //	Метод добавления клиента.
+
 
         //	Метод добавления клиента.
 
