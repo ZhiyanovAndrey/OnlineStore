@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OnlineStore.Api.Models;
+using OnlineStore.Models;
 
 namespace OnlineStore.Api.Controllers
 {
@@ -26,7 +27,7 @@ namespace OnlineStore.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateCustomer([FromBody] Customer customerModel)
+        public IActionResult CreateCustomer([FromBody] CustomerModel customerModel)
         {
             if (customerModel != null)
             {
@@ -38,6 +39,7 @@ namespace OnlineStore.Api.Controllers
             }
             return BadRequest();
         }
+        //Cannot bind 'model' in 'Customer(CustomerModel model)'
 
         //	Метод добавления клиента.
 
