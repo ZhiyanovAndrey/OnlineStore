@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using OnlineStore.Api.Models;
 using OnlineStore.Api.Models.Data;
@@ -34,8 +35,8 @@ namespace OnlineStore.Api.Controllers
         {
             if (customerModel != null)
             {
-                bool result = _Services.Create(customerModel);
-                return result ? Ok() : NotFound();
+                string result = _Services.Create(customerModel);
+                return Ok(result);
             }
             return BadRequest();
         }

@@ -15,22 +15,23 @@ namespace OnlineStore.Api.Models.Data
 
 
         //	Метод добавления клиента.
-        public bool Create(CustomerModel customerModel)
+        public string Create(CustomerModel customerModel)
         {
             if (Regex.IsMatch(customerModel.Phone, "[^0-9]+"))
             {
 
 
-            return DoAction(delegate ()
-            {
+                return DoAction(delegate ()
+                {
+                    Customer newCustomer = new Customer(customerModel.Lastname, customerModel.Firstname, customerModel.Firdname,
+                    customerModel.Phone);
+                    _db.Customers.Add(newCustomer);
+                    _db.SaveChanges();
 
-                Customer newCustomer = new Customer(customerModel.Lastname, customerModel.Firstname, customerModel.Firdname,
-                customerModel.Phone);
-                _db.Customers.Add(newCustomer);
-                _db.SaveChanges();
+                });
 
-            });
             }
+            return $"Номер телефона должен содержать 10 цифр";
         }
 
 
@@ -56,26 +57,26 @@ namespace OnlineStore.Api.Models.Data
         //	Прочие методы, на усмотрение кандидата.
 
 
-//// валидация номера телефона
-//        private void PreviewTextInput(object sender, TextCompositionEventArgs e)
-//        {
-//            Regex regex = new Regex("[^0-9]+");
-//            e.Handled = regex.IsMatch(e.Text);
-//        }
+        //// валидация номера телефона
+        //        private void PreviewTextInput(object sender, TextCompositionEventArgs e)
+        //        {
+        //            Regex regex = new Regex("[^0-9]+");
+        //            e.Handled = regex.IsMatch(e.Text);
+        //        }
 
-        
 
-        private bool DoAction(Action action)
+
+        private string DoAction(Action action)
         {
             try
             {
                 action.Invoke(); // вызываем методы сообщенные с делегатом
-                return true;
+                return $"Выполнено";
             }
             catch (Exception ex)
             {
 
-                return false;
+                return ex.Message;
             }
         }
     }
