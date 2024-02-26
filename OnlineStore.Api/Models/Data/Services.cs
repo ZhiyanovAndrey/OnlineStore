@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using OnlineStore.Models;
+﻿using OnlineStore.Models;
+using System.Text.RegularExpressions;
 
 namespace OnlineStore.Api.Models.Data
 {
@@ -8,7 +8,7 @@ namespace OnlineStore.Api.Models.Data
 
         private readonly OnlineStoreContext _db;
 
-        public Services(OnlineStoreContext db) 
+        public Services(OnlineStoreContext db)
         {
             _db = db;
         }
@@ -17,53 +17,53 @@ namespace OnlineStore.Api.Models.Data
         //	Метод добавления клиента.
         public bool Create(CustomerModel customerModel)
         {
+            if (Regex.IsMatch(customerModel.Phone, "[^0-9]+"))
+            {
 
 
             return DoAction(delegate ()
             {
-              
-                    Customer newCustomer = new Customer(customerModel.Lastname, customerModel.Firstname, customerModel.Firdname,
-                    customerModel.Phone);
-                    _db.Customers.Add(newCustomer);
-                    _db.SaveChanges();
-                            
+
+                Customer newCustomer = new Customer(customerModel.Lastname, customerModel.Firstname, customerModel.Firdname,
+                customerModel.Phone);
+                _db.Customers.Add(newCustomer);
+                _db.SaveChanges();
+
             });
+            }
         }
+
+
 
 
         //	Метод получения клиента по номеру телефона.
 
-        public UserModel Get(int id)
+        public CustomerModel GetCustomerByPhone(string phone)
         {
-            User user = _db.Users.FirstOrDefault(u => u.Id == id);
-            return user?.ToDto(); // проверка на null, вернет null не будет пытаться вызвать ToDto().
+            Customer customer = _db.Customers.FirstOrDefault(c => c.Phone == phone);
+            return customer?.ToDto();
         }
 
 
         //  Метод получения списка товаров, с возможностью фильтрации по типу товара и/или по наличию на складе и сортировки по цене(возрастанию и убыванию).
-        //	
-        //	
+
+
+
         //	Метод получения списка заказов по конкретному клиенту за выбранный временной период, отсортированный по дате создания.
 
         // Метод формирования заказа с проверкой наличия требуемого количества товара на складе, а также уменьшение доступного количества товара на складе в БД в случае успешного создания заказа.
 
         //	Прочие методы, на усмотрение кандидата.
 
-        //public bool Delete(int id)
-        //{
-        //    User user = _db.Users.FirstOrDefault(u => u.Id == id);
-        //    if (user != null)
-        //    {
-        //        return DoAction(delegate ()
-        //        {
-        //            _db.Users.Remove(user);
-        //            _db.SaveChanges();
 
-        //        });
+//// валидация номера телефона
+//        private void PreviewTextInput(object sender, TextCompositionEventArgs e)
+//        {
+//            Regex regex = new Regex("[^0-9]+");
+//            e.Handled = regex.IsMatch(e.Text);
+//        }
 
-        //    }
-        //    return false;
-        //}
+        
 
         private bool DoAction(Action action)
         {

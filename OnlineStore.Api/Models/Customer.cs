@@ -1,4 +1,5 @@
 ﻿using OnlineStore.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace OnlineStore.Api.Models;
 
@@ -12,6 +13,7 @@ public partial class Customer
 
     public string? Firdname { get; set; }
 
+    [Phone]
     public string? Phone { get; set; }
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
