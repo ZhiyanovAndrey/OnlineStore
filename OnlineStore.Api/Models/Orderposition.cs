@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace OnlineStore.Api.Models;
+﻿namespace OnlineStore.Api.Models;
 
 public partial class Orderposition
 {

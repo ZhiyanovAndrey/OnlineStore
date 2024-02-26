@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OnlineStore.Api.Models;
+using OnlineStore.Api.Models.Data;
 using OnlineStore.Models;
 
 namespace OnlineStore.Api.Controllers

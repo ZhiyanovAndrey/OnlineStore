@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using OnlineStore.Api.Models;
+using OnlineStore.Api.Models.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

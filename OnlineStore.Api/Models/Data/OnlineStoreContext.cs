@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace OnlineStore.Api.Models;
+namespace OnlineStore.Api.Models.Data;
 
 public partial class OnlineStoreContext : DbContext
 {
