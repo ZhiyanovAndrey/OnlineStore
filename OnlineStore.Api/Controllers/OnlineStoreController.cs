@@ -21,10 +21,12 @@ namespace OnlineStore.Api.Controllers
         }
 
         private readonly OnlineStoreContext _db;
+        private readonly Services _Services;
 
         public OnlineStoreController(OnlineStoreContext db)
         {
             _db = db;
+            _Services = new Services(db);
         }
 
         [HttpPost]
@@ -32,33 +34,19 @@ namespace OnlineStore.Api.Controllers
         {
             if (customerModel != null)
             {
-                Customer newCustomer = new Customer(customerModel.Lastname, customerModel.Firstname, customerModel.Firdname,
-                    customerModel.Phone);
-                _db.Customers.Add(newCustomer);
-                _db.SaveChanges();
-                return Ok();
+                bool result = _Services.Create(customerModel);
+                return result ? Ok() : NotFound();
             }
             return BadRequest();
         }
-        //Cannot bind 'model' in 'Customer(CustomerModel model)'
-
-        //	Метод добавления клиента.
 
 
-        //	Метод добавления клиента.
+      
+
+ 
 
 
-        //	Метод получения клиента по номеру телефона.
-
-
-        //  Метод получения списка товаров, с возможностью фильтрации по типу товара и/или по наличию на складе и сортировки по цене(возрастанию и убыванию).
-        //	
-        //	
-        //	Метод получения списка заказов по конкретному клиенту за выбранный временной период, отсортированный по дате создания.
-
-        // Метод формирования заказа с проверкой наличия требуемого количества товара на складе, а также уменьшение доступного количества товара на складе в БД в случае успешного создания заказа.
-
-        //	Прочие методы, на усмотрение кандидата.
+      
 
     }
 }
