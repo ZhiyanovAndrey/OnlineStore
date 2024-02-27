@@ -32,6 +32,21 @@ namespace OnlineStore.Api.Models.Data
         }
 
 
+        public string Delete(int id)
+        {
+            Customer customer = _db.Customers.FirstOrDefault(u => u.Customerid == id);
+            if (customer != null)
+            {
+                return DoAction(delegate ()
+                {
+                    _db.Customers.Remove(customer);
+                    _db.SaveChanges();
+
+                });
+
+            }
+            return $"Пользователь с номером {id} не найден";
+        }
 
 
         //	Метод получения клиента по номеру телефона.

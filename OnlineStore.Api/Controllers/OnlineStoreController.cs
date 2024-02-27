@@ -43,6 +43,15 @@ namespace OnlineStore.Api.Controllers
             return BadRequest();
         }
 
+        [HttpDelete("{id}")]
+        public IActionResult DeleteCustomer(int id) 
+        {
+            string result = _Services.Delete(id);
+            return result == null ? NotFound() : Ok(result);
+
+        }
+
+
 
         [HttpGet("{id}")]
         public IActionResult GetCustomerByPhone(string id)
