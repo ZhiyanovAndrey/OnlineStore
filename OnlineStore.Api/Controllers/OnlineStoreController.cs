@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using OnlineStore.Api.Models;
 using OnlineStore.Api.Models.Data;
 using OnlineStore.Models;
+using System.Text.RegularExpressions;
 
 namespace OnlineStore.Api.Controllers
 {
@@ -36,8 +37,9 @@ namespace OnlineStore.Api.Controllers
             if (customerModel != null)
             {
                 string result = _Services.Create(customerModel);
-                return Ok(result);
+                return result == null ? NotFound() : Ok(result);
             }
+          ;
             return BadRequest();
         }
 
@@ -45,10 +47,18 @@ namespace OnlineStore.Api.Controllers
         [HttpGet("{id}")]
         public IActionResult GetCustomerByPhone(string id)
         {
-            var desk = _Services.GetCustomerByPhone(id);
+            var customer = _Services.GetCustomerByPhone(id);
 
-            return desk == null ? NotFound() : Ok(desk);
+            return customer == null ? NotFound() : Ok(customer);
         }
+
+
+
+        //            if (Regex.Match(customerModel.Phone, @"^(\+[0-9])$").Success)
+        //{
+        //}
+        //return $"Номер телефона должен содержать 10 цифр";
+
         //// получение Desck по id проекта
         //[HttpGet("{project/projectId}")] // исключение поле не может быть пустым
         //public async Task<IEnumerable<CommonModel>> GetProjectDesks(int projectId)

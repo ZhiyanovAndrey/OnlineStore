@@ -17,8 +17,6 @@ namespace OnlineStore.Api.Models.Data
         //	Метод добавления клиента.
         public string Create(CustomerModel customerModel)
         {
-            if (Regex.IsMatch(customerModel.Phone, "[^0-9]+"))
-            {
 
 
                 return DoAction(delegate ()
@@ -30,8 +28,7 @@ namespace OnlineStore.Api.Models.Data
 
                 });
 
-            }
-            return $"Номер телефона должен содержать 10 цифр";
+
         }
 
 

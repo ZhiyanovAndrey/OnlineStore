@@ -14,7 +14,7 @@ public partial class Customer
     public string? Firdname { get; set; }
 
     [Phone]
-    public string? Phone { get; set; }
+    public string Phone { get; set; }
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
@@ -49,6 +49,10 @@ public partial class Customer
 
         };
 
-       
+
     }
+
+
+
+
 }
