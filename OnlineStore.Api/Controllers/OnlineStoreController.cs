@@ -1,10 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using OnlineStore.Api.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 using OnlineStore.Api.Models.Data;
 using OnlineStore.Models;
-using System.Text.RegularExpressions;
 
 namespace OnlineStore.Api.Controllers
 {
@@ -34,6 +30,9 @@ namespace OnlineStore.Api.Controllers
         [HttpPost]
         public IActionResult CreateCustomer([FromBody] CustomerModel customerModel)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             if (customerModel != null)
             {
                 string result = _Services.Create(customerModel);
@@ -44,7 +43,7 @@ namespace OnlineStore.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteCustomer(int id) 
+        public IActionResult DeleteCustomer(int id)
         {
             string result = _Services.Delete(id);
             return result == null ? NotFound() : Ok(result);
@@ -61,6 +60,34 @@ namespace OnlineStore.Api.Controllers
             return customer == null ? NotFound() : Ok(customer);
         }
 
+        [HttpGet("{data}")]
+        public IActionResult GetProduct(string sortOrder)
+        {
+            if (sortOrder != null)
+            {
+                switch (sortOrder)
+                {
+                    case "name_desc":
+                        students = students.OrderByDescending(s => s.LastName);
+                        break;
+                    case "Date":
+                        students = students.OrderBy(s => s.EnrollmentDate);
+                        break;
+                    case "date_desc":
+                        students = students.OrderByDescending(s => s.EnrollmentDate);
+                        break;
+                    default:
+                        students = students.OrderBy(s => s.LastName);
+                        break;
+                }
+            }
+            var customer = _Services.GetCustomerByPhone(id);
+
+            return customer == null ? NotFound() : Ok(customer);
+        }
+
+
+        //  Метод получения списка товаров, с возможностью фильтрации по типу товара и/или по наличию на складе и сортировки по цене(возрастанию и убыванию).
 
 
         //            if (Regex.Match(customerModel.Phone, @"^(\+[0-9])$").Success)

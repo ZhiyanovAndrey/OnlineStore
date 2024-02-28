@@ -1,4 +1,5 @@
-﻿using OnlineStore.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using OnlineStore.Models;
 using System.Text.RegularExpressions;
 
 namespace OnlineStore.Api.Models.Data
@@ -15,7 +16,7 @@ namespace OnlineStore.Api.Models.Data
 
 
         //	Метод добавления клиента.
-        public string Create(CustomerModel customerModel)
+        public  string Create(CustomerModel customerModel)
         {
 
 
@@ -24,9 +25,9 @@ namespace OnlineStore.Api.Models.Data
                     Customer newCustomer = new Customer(customerModel.Lastname, customerModel.Firstname, customerModel.Firdname,
                     customerModel.Phone);
                     _db.Customers.Add(newCustomer);
-                    _db.SaveChanges();
-
+                    _db.SaveChangesAsync();
                 });
+
 
 
         }
@@ -34,7 +35,7 @@ namespace OnlineStore.Api.Models.Data
 
         public string Delete(int id)
         {
-            Customer customer = _db.Customers.FirstOrDefault(u => u.Customerid == id);
+            Customer customer = _db.Customers.FirstOrDefault(c => c.Customerid == id);
             if (customer != null)
             {
                 return DoAction(delegate ()
@@ -58,8 +59,21 @@ namespace OnlineStore.Api.Models.Data
         }
 
 
-        //  Метод получения списка товаров, с возможностью фильтрации по типу товара и/или по наличию на складе и сортировки по цене(возрастанию и убыванию).
+        ////  Метод получения списка товаров, с возможностью фильтрации по типу товара и/или по наличию на складе и сортировки по цене(возрастанию и убыванию).
+        //public CustomerModel GetProduct(string phone)
+        //{
+        //    Product product = _db.Customers.FirstOrDefault(c => c.Phone == phone);
+        //    return customer?.ToDto();
+        //}
 
+
+
+
+        //[HttpGet]
+        //public async Task<IEnumerable<UserModel>> GetUsers() // меняем IEnumerable на Task для использования ToListAsync() вместо ToList()
+        //{
+        //    return await _db.Users.Select(u => u.ToDto()).ToListAsync();
+        //}
 
 
         //	Метод получения списка заказов по конкретному клиенту за выбранный временной период, отсортированный по дате создания.
