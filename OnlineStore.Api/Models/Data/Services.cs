@@ -72,34 +72,7 @@ namespace OnlineStore.Api.Models.Data
             
             return  _db.Customers.Select(c => c.ToDto()).ToList();
 
-            //if (sortOrder != null)
-            //{
-            //    switch (sortOrder)
-            //    {
-            //        case "ProductName_desc":
-            //            students = students.OrderByDescending(s => s.LastName);
-            //            break;
-            //        case "ProductName":
-            //            students = students.OrderBy(s => s.EnrollmentDate);
-            //            break;
-            //        case "ProductPrice_desc":
-            //            students = students.OrderByDescending(s => s.LastName);
-            //            break;
-            //        case "ProductPrise":
-            //            students = students.OrderBy(s => s.EnrollmentDate);
-            //            break;
 
-
-
-            //        //case "Unitsinstock":
-            //        //    students = students.OrderByDescending(s => s.EnrollmentDate);
-            //        //    break;
-
-            //        default:
-            //            students = students.OrderBy(s => s.LastName);
-            //            break;
-            //    }
-            //}
         }
 
 

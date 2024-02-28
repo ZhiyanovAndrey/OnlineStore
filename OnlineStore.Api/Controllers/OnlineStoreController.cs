@@ -62,12 +62,56 @@ namespace OnlineStore.Api.Controllers
             return customer == null ? NotFound() : Ok(customer);
         }
 
-        [HttpGet("product")]
-        public async Task<IEnumerable<CustomerModel>> GetCustomers() // меняем IEnumerable на Task для использования ToListAsync() вместо ToList()
+        [HttpGet("customers")]
+        public async Task<IEnumerable<CustomerModel>> GetCustomers()
         {
-            return await _db.Customers.Select(u => u.ToDto()).ToListAsync();
+            return await _db.Customers.OrderBy(p => p.Lastname).Select(u => u.ToDto()).ToListAsync();
         }
 
+        [HttpGet("products")]
+        public async Task<IEnumerable<Product>> Getproducts()
+        {
+            return await _db.Products.Select(u => u).OrderByDescending(p => p.Productname).ToListAsync();
+        }
+
+
+
+        [HttpGet("products/{date}")]
+        public async Task<IEnumerable<Product>> GetProducts(string sortOrder)
+        {
+            var products = _db.Products.Select(u => u);
+
+
+            if (sortOrder != null)
+            {
+                switch (sortOrder)
+                {
+                    case "ProductName_desc":
+                        products = products.OrderByDescending(p => p.Productname);
+                        break;
+                    case "ProductName":
+                        products = products.OrderBy(p => p.Productname);
+                        break;
+                    case "ProductPrice_desc":
+                        products = products.OrderByDescending(p => p.Unitprice);
+                        break;  
+                    case "ProductPrice":
+                        products = products.OrderBy(p => p.Unitprice);
+                        break;
+                    case "Unitsinstock":
+                        products = products.Where(p => p.Unitsinstock>0);
+                        break;
+                    //case "Nameofcategory":
+                    //    products = products.Include(p => p.Productname);
+                    //    break;
+                    default:
+                        products = products.OrderByDescending(p => p.Productname);
+                        break;
+                }
+                            }
+
+            return await products.ToListAsync();
+        }
 
 
         //switch (sortOrder)
