@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using OnlineStore.Api.Models;
 using OnlineStore.Api.Models.Data;
 using OnlineStore.Models;
 
@@ -60,31 +62,29 @@ namespace OnlineStore.Api.Controllers
             return customer == null ? NotFound() : Ok(customer);
         }
 
-        [HttpGet("{data}")]
-        public IActionResult GetProduct(string sortOrder)
+        [HttpGet("product")]
+        public async Task<IEnumerable<CustomerModel>> GetCustomers() // меняем IEnumerable на Task для использования ToListAsync() вместо ToList()
         {
-            if (sortOrder != null)
-            {
-                switch (sortOrder)
-                {
-                    case "name_desc":
-                        students = students.OrderByDescending(s => s.LastName);
-                        break;
-                    case "Date":
-                        students = students.OrderBy(s => s.EnrollmentDate);
-                        break;
-                    case "date_desc":
-                        students = students.OrderByDescending(s => s.EnrollmentDate);
-                        break;
-                    default:
-                        students = students.OrderBy(s => s.LastName);
-                        break;
-                }
-            }
-            var customer = _Services.GetCustomerByPhone(id);
-
-            return customer == null ? NotFound() : Ok(customer);
+            return await _db.Customers.Select(u => u.ToDto()).ToListAsync();
         }
+
+
+
+        //switch (sortOrder)
+        //    {
+        //        case "name_desc":
+        //            students = students.OrderByDescending(s => s.LastName);
+        //            break;
+        //        case "Date":
+        //            students = students.OrderBy(s => s.EnrollmentDate);
+        //            break;
+        //        case "date_desc":
+        //            students = students.OrderByDescending(s => s.EnrollmentDate);
+        //            break;
+        //        default:
+        //            students = students.OrderBy(s => s.LastName);
+        //            break;
+        //    }
 
 
         //  Метод получения списка товаров, с возможностью фильтрации по типу товара и/или по наличию на складе и сортировки по цене(возрастанию и убыванию).

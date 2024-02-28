@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using OnlineStore.Models;
 using System.Text.RegularExpressions;
 
@@ -65,7 +66,41 @@ namespace OnlineStore.Api.Models.Data
         //    Product product = _db.Customers.FirstOrDefault(c => c.Phone == phone);
         //    return customer?.ToDto();
         //}
+        public IEnumerable<CustomerModel> GetProducts(string sortOrder) // меняем IEnumerable на Task для использования ToListAsync() вместо ToList()
+        {
+          
+            
+            return  _db.Customers.Select(c => c.ToDto()).ToList();
 
+            //if (sortOrder != null)
+            //{
+            //    switch (sortOrder)
+            //    {
+            //        case "ProductName_desc":
+            //            students = students.OrderByDescending(s => s.LastName);
+            //            break;
+            //        case "ProductName":
+            //            students = students.OrderBy(s => s.EnrollmentDate);
+            //            break;
+            //        case "ProductPrice_desc":
+            //            students = students.OrderByDescending(s => s.LastName);
+            //            break;
+            //        case "ProductPrise":
+            //            students = students.OrderBy(s => s.EnrollmentDate);
+            //            break;
+
+
+
+            //        //case "Unitsinstock":
+            //        //    students = students.OrderByDescending(s => s.EnrollmentDate);
+            //        //    break;
+
+            //        default:
+            //            students = students.OrderBy(s => s.LastName);
+            //            break;
+            //    }
+            //}
+        }
 
 
 
