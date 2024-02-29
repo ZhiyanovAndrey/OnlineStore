@@ -53,6 +53,7 @@ namespace OnlineStore.Api.Controllers
         }
 
 
+        // 2)	Метод получения клиента по номеру телефона.
 
         [HttpGet("{id}")]
         public IActionResult GetCustomerByPhone(string id)
@@ -71,10 +72,10 @@ namespace OnlineStore.Api.Controllers
         [HttpGet("products")]
         public async Task<IEnumerable<Product>> Getproducts()
         {
-            return await _db.Products.Select(u => u).OrderByDescending(p => p.Productname).ToListAsync();
+            return await _db.Products.ToListAsync();
         }
 
-
+        //3)Метод получения списка товаров, с возможностью фильтрации по типу товара и/или по наличию на складе и сортировки по цене (возрастанию и убыванию).
 
         [HttpGet("products/{sortOrder}")]
         public async Task<IEnumerable<Product>> GetProducts(string sortOrder)
@@ -82,33 +83,28 @@ namespace OnlineStore.Api.Controllers
             var products = _db.Products.Select(u => u);
 
 
-            if (sortOrder != null)
+            switch (sortOrder)
             {
-                switch (sortOrder)
-                {
-                    case "ProductName_desc":
-                        products = products.OrderByDescending(p => p.Productname);
-                        break;
-                    case "ProductName":
-                        products = products.OrderBy(p => p.Productname);
-                        break;
-                    case "ProductPrice_desc":
-                        products = products.OrderByDescending(p => p.Unitprice);
-                        break;
-                    case "ProductPrice":
-                        products = products.OrderBy(p => p.Unitprice);
-                        break;
-                    case "UnitsinstockFilter":
-                        products = products.Where(p => p.Unitsinstock > 0);
-                        break;
-                    case "NameofcategoryFilter":
-                        products = products.Include(p => p.Categoryid);
-                        break;
-                    default:
-                        products = products.OrderBy(p => p.Productname);
-                        break;
-                }
+                case "ProductName_desc":
+                    products = products.OrderByDescending(p => p.Productname);
+                    break;
+                case "ProductName":
+                    products = products.OrderBy(p => p.Productname);
+                    break;
+                case "ProductPrice_desc":
+                    products = products.OrderByDescending(p => p.Unitprice);
+                    break;
+                case "ProductPrice":
+                    products = products.OrderBy(p => p.Unitprice);
+                    break;
+                case "UnitsinstockFilter":
+                    products = products.Where(p => p.Unitsinstock > 0);
+                    break;
+                default:
+                    products = products.OrderBy(p => p.Productname);
+                    break;
             }
+
 
             return await products.ToListAsync();
         }
@@ -117,35 +113,29 @@ namespace OnlineStore.Api.Controllers
         public async Task<IEnumerable<Category>> GetProductsByCategory(int CategoryId)
         {
 
-            var products = _db.Categories.Select(u => u).Include(c => c.Products).Where(p => p.Categoryid == CategoryId);  //.Where(p=>p.Categoryid==CategoryId
+            var products = _db.Categories.Include(c => c.Products).Where(p => p.Categoryid == CategoryId);
             return await products.ToListAsync();
         }
 
 
-        //switch (sortOrder)
-        //    {
-        //        case "name_desc":
-        //            students = students.OrderByDescending(s => s.LastName);
-        //            break;
-        //        case "Date":
-        //            students = students.OrderBy(s => s.EnrollmentDate);
-        //            break;
-        //        case "date_desc":
-        //            students = students.OrderByDescending(s => s.EnrollmentDate);
-        //            break;
-        //        default:
-        //            students = students.OrderBy(s => s.LastName);
-        //            break;
-        //    }
+
+        //  4)	Метод получения списка заказов по конкретному клиенту за выбранный временной период,
+        //  отсортированный по дате создания.
+        [HttpGet("orders/{CustomerId}")]
+        public async Task<IEnumerable<Order>> GetOrdersByCustomeer(int CustomerId)
+        {
+            // Where(x => x.Age >= userParameter.MinAgeFilter && x.Age <= userParameter.MaxAgeFilter)
+            var orders = _db.Orders.Include(o => o.Customer).Where(c => c.Customerid == CustomerId).OrderBy(o=>o.Orderdate);
+            return await orders.ToListAsync();
+        }
 
 
-        //  Метод получения списка товаров, с возможностью фильтрации по типу товара и/или по наличию на складе и сортировки по цене(возрастанию и убыванию).
+
+        // 5)	Метод формирования заказа с проверкой наличия требуемого количества товара на складе,
+        // а также уменьшение доступного количества товара на складе в БД в случае успешного создания заказа.
 
 
-        //            if (Regex.Match(customerModel.Phone, @"^(\+[0-9])$").Success)
-        //{
-        //}
-        //return $"Номер телефона должен содержать 10 цифр";
+
 
         //// получение Desck по id проекта
         //[HttpGet("{project/projectId}")] // исключение поле не может быть пустым
