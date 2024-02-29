@@ -15,7 +15,7 @@ public partial class Product
 
     public int? Unitsinstock { get; set; }
 
-    public virtual Category Category { get; set; } = null!;
+    public virtual Category Category { get; set; }
 
     public virtual ICollection<Orderposition> Orderpositions { get; set; } = new List<Orderposition>();
 }

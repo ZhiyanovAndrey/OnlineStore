@@ -117,7 +117,7 @@ namespace OnlineStore.Api.Controllers
         public async Task<IEnumerable<Category>> GetProductsByCategory(int CategoryId)
         {
 
-            var products = _db.Categories.Include(c => c.Products.Where(p=>p.Categoryid==CategoryId));
+            var products = _db.Categories.Select(u => u).Include(c => c.Products).Where(p => p.Categoryid == CategoryId);  //.Where(p=>p.Categoryid==CategoryId
             return await products.ToListAsync();
         }
 
