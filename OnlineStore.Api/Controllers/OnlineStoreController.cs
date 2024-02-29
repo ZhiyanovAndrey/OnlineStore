@@ -76,7 +76,7 @@ namespace OnlineStore.Api.Controllers
 
 
 
-        [HttpGet("products/{date}")]
+        [HttpGet("products/{sortOrder}")]
         public async Task<IEnumerable<Product>> GetProducts(string sortOrder)
         {
             var products = _db.Products.Select(u => u);
@@ -94,22 +94,30 @@ namespace OnlineStore.Api.Controllers
                         break;
                     case "ProductPrice_desc":
                         products = products.OrderByDescending(p => p.Unitprice);
-                        break;  
+                        break;
                     case "ProductPrice":
                         products = products.OrderBy(p => p.Unitprice);
                         break;
-                    case "Unitsinstock":
-                        products = products.Where(p => p.Unitsinstock>0);
+                    case "UnitsinstockFilter":
+                        products = products.Where(p => p.Unitsinstock > 0);
                         break;
-                    //case "Nameofcategory":
-                    //    products = products.Include(p => p.Productname);
-                    //    break;
+                    case "NameofcategoryFilter":
+                        products = products.Include(p => p.Categoryid);
+                        break;
                     default:
-                        products = products.OrderByDescending(p => p.Productname);
+                        products = products.OrderBy(p => p.Productname);
                         break;
                 }
-                            }
+            }
 
+            return await products.ToListAsync();
+        }
+
+        [HttpGet("products/filter/{CategoryId}")]
+        public async Task<IEnumerable<Category>> GetProductsByCategory(int CategoryId)
+        {
+
+            var products = _db.Categories.Include(c => c.Products.Where(p=>p.Categoryid==CategoryId));
             return await products.ToListAsync();
         }
 
