@@ -63,12 +63,14 @@ namespace OnlineStore.Api.Controllers
             return customer == null ? NotFound() : Ok(customer);
         }
 
+        // Метод получения всех покупателей
         [HttpGet("customers")]
         public async Task<IEnumerable<CustomerModel>> GetCustomers()
         {
             return await _db.Customers.OrderBy(p => p.Lastname).Select(u => u.ToDto()).ToListAsync();
         }
 
+        // Метод получения всех продуктов
         [HttpGet("products")]
         public async Task<IEnumerable<Product>> Getproducts()
         {

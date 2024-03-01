@@ -34,6 +34,23 @@ namespace OnlineStore.Api.Models.Data
         }
 
 
+        public  string CreateOrder(Order order)
+        {
+
+
+                return DoAction(delegate ()
+                {
+                    Customer newOrder = new Customer(order.Lastname, order.Firstname, order.Firdname,
+                    order.Phone);
+                    _db.Customers.Add(newCustomer);
+                    _db.SaveChangesAsync();
+                });
+
+
+
+        }
+
+
         public string Delete(int id)
         {
             Customer customer = _db.Customers.FirstOrDefault(c => c.Customerid == id);
