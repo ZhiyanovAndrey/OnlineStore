@@ -17,7 +17,7 @@ namespace OnlineStore.Api.Models.Data
 
 
         //	Метод добавления клиента.
-        public  string Create(CustomerModel customerModel)
+        public  string CreateCustomer(CustomerModel customerModel)
         {
 
 
@@ -33,16 +33,15 @@ namespace OnlineStore.Api.Models.Data
 
         }
 
-
-        public  string CreateOrder(Order order)
+        //	Метод добавления клиента.
+        public string CreateOrder(OrderModel orderModel)
         {
 
 
                 return DoAction(delegate ()
                 {
-                    Customer newOrder = new Customer(order.Lastname, order.Firstname, order.Firdname,
-                    order.Phone);
-                    _db.Customers.Add(newCustomer);
+                    Order newOrder = new Order(orderModel);
+                    _db.Orders.Add(newOrder);
                     _db.SaveChangesAsync();
                 });
 

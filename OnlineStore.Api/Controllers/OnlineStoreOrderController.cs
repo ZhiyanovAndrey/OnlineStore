@@ -20,14 +20,14 @@ namespace OnlineStore.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateOrder([FromBody] Order order)
+        public IActionResult CreateOrder([FromBody] OrderModel orderModel)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (order != null)
+            if (orderModel != null)
             {
-                string result = _Services.CreateOrder(order);
+                string result = _Services.CreateOrder(orderModel);
                 return result == null ? NotFound() : Ok(result);
             }
           ;

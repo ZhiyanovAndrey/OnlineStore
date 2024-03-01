@@ -14,7 +14,12 @@ public partial class Order
 
     public virtual ICollection<Orderposition> Orderpositions { get; set; } = new List<Orderposition>();
 
-    public Order() { }
+    public Order()
+    {
+        Orderdate = DateOnly.FromDateTime(DateTime.Now);
+    }
+
+    //public Order() { }
 
     public Order(OrderModel orderModel)
     {
