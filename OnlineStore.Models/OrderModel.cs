@@ -12,7 +12,7 @@ namespace OnlineStore.Models
 
         public int Customerid { get; set; }
 
-        public DateTime? Orderdate { get; set; } = DateTime.Now;    
+        public DateTime? Orderdate { get; set; }  
 
         //public List<Orderposition> Orderpositions { get; set; } = new List<Orderposition>();
     }
