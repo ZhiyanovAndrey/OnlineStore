@@ -12,8 +12,8 @@ namespace OnlineStore.Models
 
         public int Customerid { get; set; }
 
-        public DateOnly? Orderdate { get; set; }
+        public DateTime? Orderdate { get; set; } = DateTime.Now;    
 
-       //public List<Orderposition> Orderpositions { get; set; } = new List<Orderposition>();
+        //public List<Orderposition> Orderpositions { get; set; } = new List<Orderposition>();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using OnlineStore.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OnlineStore.Api.Models;
 
@@ -8,7 +9,8 @@ public partial class Order
 
     public int Customerid { get; set; }
 
-    public DateOnly? Orderdate { get; set; }
+    //[Column(TypeName = "date")]
+    public DateTime? Orderdate { get; set; }    
 
     public virtual Customer Customer { get; set; } = null!;
 
@@ -16,10 +18,10 @@ public partial class Order
 
     public Order()
     {
-        Orderdate = DateOnly.FromDateTime(DateTime.Now);
+        //Orderdate = DateTime.Now;
+        //Orderdate = DateOnly.FromDateTime(DateTime.Now);
     }
 
-    //public Order() { }
 
     public Order(OrderModel orderModel)
     {

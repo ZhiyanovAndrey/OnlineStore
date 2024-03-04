@@ -7,8 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers().AddJsonOptions(x =>
-                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles); 
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
+
+// отображение даты и времени в PSQL
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true); 
 
 // регистрация БД
 builder.Services.AddDbContext<OnlineStoreContext>(options =>
