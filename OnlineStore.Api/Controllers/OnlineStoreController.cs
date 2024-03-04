@@ -37,7 +37,7 @@ namespace OnlineStore.Api.Controllers
 
             if (customerModel != null)
             {
-                string result = _Services.CreateCustomer(customerModel);
+                Task<string> result = _Services.CreateCustomer(customerModel);
                 return result == null ? NotFound() : Ok(result);
             }
           ;
@@ -77,7 +77,7 @@ namespace OnlineStore.Api.Controllers
             return await _db.Products.ToListAsync();
         }
 
-        //3)Метод получения списка товаров, с возможностью фильтрации по типу товара и/или по наличию на складе и сортировки по цене (возрастанию и убыванию).
+        //3) Метод получения списка товаров, с возможностью фильтрации по типу товара и/или по наличию на складе и сортировки по цене (возрастанию и убыванию).
 
         [HttpGet("products/{sortOrder}")]
         public async Task<IEnumerable<Product>> GetProducts(string sortOrder)
@@ -122,21 +122,6 @@ namespace OnlineStore.Api.Controllers
 
 
 
-
-
-
-        //// получение Desck по id проекта
-        //[HttpGet("{project/projectId}")] // исключение поле не может быть пустым
-        //public async Task<IEnumerable<CommonModel>> GetProjectDesks(int projectId)
-        //{
-        //    var user = _usersService.GetUser(HttpContext.User.Identity.Name); // получение пользователя
-        //    if (user != null)
-        //    {
-        //        return await _desksService.GetProjectDesks(projectId, user.Id).ToListAsync();
-
-        //    }
-        //    return Array.Empty<CommonModel>();
-        //}
 
 
 

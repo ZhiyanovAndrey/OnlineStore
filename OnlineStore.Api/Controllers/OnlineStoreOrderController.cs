@@ -29,7 +29,7 @@ namespace OnlineStore.Api.Controllers
 
             if (orderModel != null)
             {
-                string result = _Services.CreateOrder(orderModel);
+                Task<string> result = _Services.CreateOrder(orderModel);
                 return result == null ? NotFound() : Ok(result);
             }
           ;

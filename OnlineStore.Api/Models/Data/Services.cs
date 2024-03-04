@@ -17,33 +17,33 @@ namespace OnlineStore.Api.Models.Data
 
 
         //	Метод добавления клиента.
-        public  string CreateCustomer(CustomerModel customerModel)
+        public async Task<string> CreateCustomer(CustomerModel customerModel)
         {
 
 
-                return DoAction(delegate ()
-                {
-                    Customer newCustomer = new Customer(customerModel.Lastname, customerModel.Firstname, customerModel.Firdname,
-                    customerModel.Phone);
-                    _db.Customers.Add(newCustomer);
-                    _db.SaveChangesAsync();
-                });
+            return DoAction(async delegate ()
+            {
+                Customer newCustomer = new Customer(customerModel.Lastname, customerModel.Firstname, customerModel.Firdname,
+                customerModel.Phone);
+                _db.Customers.Add(newCustomer);
+                await _db.SaveChangesAsync();
+            });
 
 
 
         }
 
         //	Метод добавления клиента.
-        public string CreateOrder(OrderModel orderModel)
+        public async Task<string> CreateOrder(OrderModel orderModel)
         {
 
 
-                return DoAction(delegate ()
-                {
-                    Order newOrder = new Order(orderModel);
-                    _db.Orders.Add(newOrder);
-                    _db.SaveChangesAsync();
-                });
+            return DoAction(async delegate()
+            {
+                Order newOrder = new Order(orderModel);
+                _db.Orders.Add(newOrder);
+                await _db.SaveChangesAsync();
+            });
 
 
 
@@ -84,9 +84,9 @@ namespace OnlineStore.Api.Models.Data
         //}
         public IEnumerable<CustomerModel> GetProducts(string sortOrder) // меняем IEnumerable на Task для использования ToListAsync() вместо ToList()
         {
-          
-            
-            return  _db.Customers.Select(c => c.ToDto()).ToList();
+
+
+            return _db.Customers.Select(c => c.ToDto()).ToList();
 
 
         }
