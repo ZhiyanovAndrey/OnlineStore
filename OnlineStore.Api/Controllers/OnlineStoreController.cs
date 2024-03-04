@@ -121,20 +121,6 @@ namespace OnlineStore.Api.Controllers
 
 
 
-        //  4)	Метод получения списка заказов по конкретному клиенту за выбранный временной период,
-        //  отсортированный по дате создания.
-        [HttpGet("orders/{CustomerId}")]
-        public async Task<IEnumerable<Order>> GetOrdersByCustomeer(int CustomerId)
-        {
-            // Where(x => x.Age >= userParameter.MinAgeFilter && x.Age <= userParameter.MaxAgeFilter)
-            var orders = _db.Orders.Include(o => o.Customer).Where(c => c.Customerid == CustomerId).OrderBy(o=>o.Orderdate);
-            return await orders.ToListAsync();
-        }
-
-
-
-        // 5)	Метод формирования заказа с проверкой наличия требуемого количества товара на складе,
-        // а также уменьшение доступного количества товара на складе в БД в случае успешного создания заказа.
 
 
 
