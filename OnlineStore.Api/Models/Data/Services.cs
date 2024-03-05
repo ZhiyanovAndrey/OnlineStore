@@ -34,7 +34,7 @@ namespace OnlineStore.Api.Models.Data
         }
 
         //	Метод добавления заказа
-        public string CreateOrder(OrderModel orderModel)
+        public string CreateOrder(OrderpositionModel orderModel)
         {
 
                if (_db.Customers.FirstOrDefault(c => c.Customerid == orderModel.Customerid) != null) 
@@ -51,6 +51,19 @@ namespace OnlineStore.Api.Models.Data
                 return $"Пользователь с номером {orderModel.Customerid} не найден";
 
 
+
+        }
+
+        public string CreateOrderPosition(OrderpositionModel orderModel)
+        {
+
+                return DoAction(delegate ()
+                {
+
+                    Order newOrder = new Order(orderModel);
+                    _db.Orders.Add(newOrder);
+                    _db.SaveChangesAsync();
+                });
 
         }
 
@@ -115,7 +128,7 @@ namespace OnlineStore.Api.Models.Data
         }
 
         //	Метод получения списка заказов по конкретному клиенту за выбранный временной период, отсортированный по дате создания.
-        public async Task<IEnumerable<OrderModel>> GetOrderByCustomer(int CustomerId, DateTime dateStart, DateTime dateEnd)
+        public async Task<IEnumerable<OrderpositionModel>> GetOrderByCustomer(int CustomerId, DateTime dateStart, DateTime dateEnd)
         {
             var orders = _db.Orders.Include(o => o.Customer)
                 .Where(c => c.Customerid == CustomerId)
@@ -126,16 +139,15 @@ namespace OnlineStore.Api.Models.Data
         }
 
 
-        //[HttpGet]
-        //public async Task<IEnumerable<UserModel>> GetUsers() // меняем IEnumerable на Task для использования ToListAsync() вместо ToList()
-        //{
-        //    return await _db.Users.Select(u => u.ToDto()).ToListAsync();
-        //}
+
+           
+
+        /* Метод формирования заказа с проверкой наличия требуемого количества товара на складе,
+         * а также уменьшение доступного количества товара на складе в БД в случае успешного создания заказа.*/
 
 
-   
 
-        // Метод формирования заказа с проверкой наличия требуемого количества товара на складе, а также уменьшение доступного количества товара на складе в БД в случае успешного создания заказа.
+
 
         //	Прочие методы, на усмотрение кандидата.
 

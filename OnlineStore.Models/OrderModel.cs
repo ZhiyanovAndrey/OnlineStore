@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OnlineStore.Models
 {
-    public class OrderModel
+    public class OrderpositionModel
     {
         public int Orderid { get; set; }
 
@@ -14,6 +14,5 @@ namespace OnlineStore.Models
 
         public DateTime? Orderdate { get; set; }  
 
-        //public List<Orderposition> Orderpositions { get; set; } = new List<Orderposition>();
     }
 }

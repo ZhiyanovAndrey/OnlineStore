@@ -22,7 +22,7 @@ namespace OnlineStore.Api.Controllers
 
 
         [HttpPost]
-        public IActionResult CreateOrder([FromBody] OrderModel orderModel)
+        public IActionResult CreateOrder([FromBody] OrderpositionModel orderModel)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -42,7 +42,7 @@ namespace OnlineStore.Api.Controllers
         //  4)	Метод получения списка заказов по конкретному клиенту за выбранный временной период,
         //  отсортированный по дате создания.
         [HttpGet("orders/{CustomerId}")]
-        public async Task<IEnumerable<OrderModel>> GetOrdersByCustomeer(int CustomerId, DateTime dateStart, DateTime dateEnd) // или использовать onlyDate
+        public async Task<IEnumerable<OrderpositionModel>> GetOrdersByCustomeer(int CustomerId, DateTime dateStart, DateTime dateEnd) // или использовать onlyDate
         {
             return await _Services.GetOrderByCustomer(CustomerId, dateStart, dateEnd);
 
@@ -54,6 +54,8 @@ namespace OnlineStore.Api.Controllers
 
         // 5)	Метод формирования заказа с проверкой наличия требуемого количества товара на складе,
         // а также уменьшение доступного количества товара на складе в БД в случае успешного создания заказа.
+
+
 
     }
 }

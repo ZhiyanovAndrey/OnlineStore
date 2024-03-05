@@ -1,4 +1,6 @@
-﻿namespace OnlineStore.Api.Models;
+﻿using OnlineStore.Models;
+
+namespace OnlineStore.Api.Models;
 
 public partial class Orderposition
 {
@@ -15,4 +17,24 @@ public partial class Orderposition
     public virtual Order Order { get; set; } = null!;
 
     public virtual Product Product { get; set; } = null!;
+
+
+    public Orderposition(OrderpositionModel orderModel)
+    {
+        Orderid = orderModel.Orderid;
+        Customerid = orderModel.Customerid;
+        Orderdate = DateTime.Now;
+
+
+    }
+
+    public OrderpositionModel ToDto()
+    {
+        return new OrderpositionModel()
+        {
+            Orderid = this.Orderid,
+            Customerid = this.Customerid,
+            Orderdate = this.Orderdate
+        };
+    }
 }

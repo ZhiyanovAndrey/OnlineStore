@@ -18,7 +18,7 @@ public partial class Order
 
     public Order() { }
 
-    public Order(OrderModel orderModel)
+    public Order(OrderpositionModel orderModel)
     {
         Orderid = orderModel.Orderid;
         Customerid = orderModel.Customerid;
@@ -27,9 +27,9 @@ public partial class Order
 
     }
 
-    public OrderModel ToDto()
+    public OrderpositionModel ToDto()
     {
-        return new OrderModel()
+        return new OrderpositionModel()
         {
             Orderid = this.Orderid,
             Customerid = this.Customerid,
