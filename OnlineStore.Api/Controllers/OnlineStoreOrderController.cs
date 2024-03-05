@@ -42,11 +42,17 @@ namespace OnlineStore.Api.Controllers
         //  4)	Метод получения списка заказов по конкретному клиенту за выбранный временной период,
         //  отсортированный по дате создания.
         [HttpGet("orders/{CustomerId}")]
-        public async Task<IEnumerable<Order>> GetOrdersByCustomeer(int CustomerId)
+        public async Task<IEnumerable<Order>> GetOrdersByCustomeer(int CustomerId, DateTime dateStart, DateTime dateEnd) // или использовать onlyDate
         {
             // Where(x => x.Age >= userParameter.MinAgeFilter && x.Age <= userParameter.MaxAgeFilter)
-            var orders = _db.Orders.Include(o => o.Customer).Where(c => c.Customerid == CustomerId).OrderBy(o => o.Orderdate);
+            var orders = _db.Orders.Include(o => o.Customer)
+                .Where(c => c.Customerid == CustomerId)
+                .Where(o => o.Orderdate >= dateStart.Date && o.Orderdate <= dateEnd.Date)
+                .OrderBy(o => o.Orderdate);
             return await orders.ToListAsync();
+
+
+          
         }
 
 
