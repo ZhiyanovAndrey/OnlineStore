@@ -19,22 +19,29 @@ public partial class Orderposition
     public virtual Product Product { get; set; } = null!;
 
 
-    public Orderposition(OrderpositionModel orderModel)
-    {
-        Orderid = orderModel.Orderid;
-        Customerid = orderModel.Customerid;
-        Orderdate = DateTime.Now;
+    public Orderposition() { }
 
+    public Orderposition(OrderPositionModel orderPositionModel)
+    {
+        Orderpositionsid = orderPositionModel.Orderpositionsid;
+        Orderid = orderPositionModel.Orderid;
+        Productid = orderPositionModel.Productid;
+        Unitprice = orderPositionModel.Unitprice;
+        Quantity = orderPositionModel.Quantity;
 
     }
 
-    public OrderpositionModel ToDto()
+    public OrderPositionModel ToDto()
     {
-        return new OrderpositionModel()
+        return new OrderPositionModel()
         {
+            Orderpositionsid = this.Orderpositionsid,
             Orderid = this.Orderid,
-            Customerid = this.Customerid,
-            Orderdate = this.Orderdate
+            Productid = this.Productid,
+            Unitprice = this.Unitprice,
+            Quantity = this.Quantity,
+
         };
     }
+
 }
