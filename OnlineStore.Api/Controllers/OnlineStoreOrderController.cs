@@ -20,7 +20,7 @@ namespace OnlineStore.Api.Controllers
             _Services = new Services(db);
         }
 
-        
+
         [HttpPost]
         public IActionResult CreateOrder([FromBody] OrderModel orderModel)
         {
@@ -30,7 +30,7 @@ namespace OnlineStore.Api.Controllers
             if (orderModel != null)
             {
                 string result = _Services.CreateOrder(orderModel);
-                return  Ok(result); //result == null ? NotFound() :
+                return Ok(result); //result == null ? NotFound() :
             }
           ;
             return BadRequest();
@@ -44,14 +44,11 @@ namespace OnlineStore.Api.Controllers
         [HttpGet("orders/{CustomerId}")]
         public async Task<IEnumerable<Order>> GetOrdersByCustomeer(int CustomerId, DateTime dateStart, DateTime dateEnd) // или использовать onlyDate
         {
-            // Where(x => x.Age >= userParameter.MinAgeFilter && x.Age <= userParameter.MaxAgeFilter)
-            var orders = _db.Orders.Include(o => o.Customer)
-                .Where(c => c.Customerid == CustomerId)
-                //.Where(o => o.Orderdate >= dateStart.Date && o.Orderdate <= dateEnd.Date)
-                .OrderBy(o => o.Orderdate);
-            return await orders.ToListAsync();
-          
+            return await _Services.GetOrderByCustomer(CustomerId, dateStart, dateEnd);
+
         }
+
+
 
 
 
