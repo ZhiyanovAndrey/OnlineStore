@@ -82,34 +82,10 @@ namespace OnlineStore.Api.Controllers
         [HttpGet("products/{sortOrder}")]
         public async Task<IEnumerable<Product>> GetProducts(string sortOrder)
         {
-            var products = _db.Products.Select(u => u);
-
-
-            switch (sortOrder)
-            {
-                case "ProductName_desc":
-                    products = products.OrderByDescending(p => p.Productname);
-                    break;
-                case "ProductName":
-                    products = products.OrderBy(p => p.Productname);
-                    break;
-                case "ProductPrice_desc":
-                    products = products.OrderByDescending(p => p.Unitprice);
-                    break;
-                case "ProductPrice":
-                    products = products.OrderBy(p => p.Unitprice);
-                    break;
-                case "UnitsinstockFilter":
-                    products = products.Where(p => p.Unitsinstock > 0);
-                    break;
-                default:
-                    products = products.OrderBy(p => p.Productname);
-                    break;
-            }
-
-
-            return await products.ToListAsync();
+            return await _Services.GetProductsWithSort(sortOrder);
         }
+
+       
 
         [HttpGet("products/filter/{CategoryId}")]
         public async Task<IEnumerable<Category>> GetProductsByCategory(int CategoryId)

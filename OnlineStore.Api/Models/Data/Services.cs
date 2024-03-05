@@ -81,19 +81,40 @@ namespace OnlineStore.Api.Models.Data
         }
 
 
-        ////  Метод получения списка товаров, с возможностью фильтрации по типу товара и/или по наличию на складе и сортировки по цене(возрастанию и убыванию).
-        //public CustomerModel GetProduct(string phone)
-        //{
-        //    Product product = _db.Customers.FirstOrDefault(c => c.Phone == phone);
-        //    return customer?.ToDto();
-        //}
-        public IEnumerable<CustomerModel> GetProducts(string sortOrder) // меняем IEnumerable на Task для использования ToListAsync() вместо ToList()
+        //  Метод получения списка товаров, с возможностью фильтрации по типу товара и/или по наличию на складе и сортировки по цене(возрастанию и убыванию).
+
+        public async Task<IEnumerable<Product>> GetProductsWithSort(string sortOrder)
         {
-            return _db.Customers.Select(c => c.ToDto()).ToList();
+            var products = _db.Products.Select(u => u);
+
+
+            switch (sortOrder)
+            {
+                case "ProductName_desc":
+                    products = products.OrderByDescending(p => p.Productname);
+                    break;
+                case "ProductName":
+                    products = products.OrderBy(p => p.Productname);
+                    break;
+                case "ProductPrice_desc":
+                    products = products.OrderByDescending(p => p.Unitprice);
+                    break;
+                case "ProductPrice":
+                    products = products.OrderBy(p => p.Unitprice);
+                    break;
+                case "UnitsinstockFilter":
+                    products = products.Where(p => p.Unitsinstock > 0);
+                    break;
+                default:
+                    products = products.OrderBy(p => p.Productname);
+                    break;
+            }
+
+
+            return await products.ToListAsync();
         }
 
-
-     //	Метод получения списка заказов по конкретному клиенту за выбранный временной период, отсортированный по дате создания.
+        //	Метод получения списка заказов по конкретному клиенту за выбранный временной период, отсортированный по дате создания.
         public async Task<IEnumerable<OrderModel>> GetOrderByCustomer(int CustomerId, DateTime dateStart, DateTime dateEnd)
         {
             var orders = _db.Orders.Include(o => o.Customer)
