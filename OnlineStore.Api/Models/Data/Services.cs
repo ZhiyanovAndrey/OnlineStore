@@ -94,13 +94,14 @@ namespace OnlineStore.Api.Models.Data
 
 
      //	Метод получения списка заказов по конкретному клиенту за выбранный временной период, отсортированный по дате создания.
-        public async Task<IEnumerable<Order>> GetOrderByCustomer(int CustomerId, DateTime dateStart, DateTime dateEnd)
+        public async Task<IEnumerable<OrderModel>> GetOrderByCustomer(int CustomerId, DateTime dateStart, DateTime dateEnd)
         {
             var orders = _db.Orders.Include(o => o.Customer)
                 .Where(c => c.Customerid == CustomerId)
                 //.Where(o => o.Orderdate >= dateStart.Date && o.Orderdate <= dateEnd.Date)
                 .OrderBy(o => o.Orderdate);
-            return await orders.ToListAsync();
+         
+            return await orders.Select(d => d.ToDto()).ToListAsync();
         }
 
 
