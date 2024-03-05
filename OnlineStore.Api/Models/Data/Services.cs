@@ -37,13 +37,18 @@ namespace OnlineStore.Api.Models.Data
         public string CreateOrder(OrderModel orderModel)
         {
 
+               if (_db.Customers.FirstOrDefault(c => c.Customerid == orderModel.Customerid) != null) 
+                {
 
             return DoAction(delegate()
             {
+                
                 Order newOrder = new Order(orderModel);
                 _db.Orders.Add(newOrder);
                 _db.SaveChangesAsync();
             });
+                }
+                return $"Пользователь с номером {orderModel.Customerid} не найден";
 
 
 

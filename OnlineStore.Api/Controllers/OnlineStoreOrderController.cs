@@ -30,7 +30,7 @@ namespace OnlineStore.Api.Controllers
             if (orderModel != null)
             {
                 string result = _Services.CreateOrder(orderModel);
-                return result == null ? NotFound() : Ok(result);
+                return  Ok(result); //result == null ? NotFound() :
             }
           ;
             return BadRequest();
