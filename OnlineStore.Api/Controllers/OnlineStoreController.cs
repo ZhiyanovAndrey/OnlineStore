@@ -37,7 +37,7 @@ namespace OnlineStore.Api.Controllers
 
             if (customerModel != null)
             {
-                Task<string> result = _Services.CreateCustomer(customerModel);
+                string result = _Services.CreateCustomer(customerModel);
                 return result == null ? NotFound() : Ok(result);
             }
           ;

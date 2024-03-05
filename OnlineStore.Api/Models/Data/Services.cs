@@ -17,32 +17,32 @@ namespace OnlineStore.Api.Models.Data
 
 
         //	Метод добавления клиента.
-        public async Task<string> CreateCustomer(CustomerModel customerModel)
+        public string CreateCustomer(CustomerModel customerModel)
         {
 
 
-            return DoAction(async delegate ()
+            return DoAction(delegate ()
             {
                 Customer newCustomer = new Customer(customerModel.Lastname, customerModel.Firstname, customerModel.Firdname,
                 customerModel.Phone);
                 _db.Customers.Add(newCustomer);
-                await _db.SaveChangesAsync();
+                _db.SaveChangesAsync();
             });
 
 
 
         }
 
-        //	Метод добавления клиента.
-        public async Task<string> CreateOrder(OrderModel orderModel)
+        //	Метод добавления заказа
+        public string CreateOrder(OrderModel orderModel)
         {
 
 
-            return DoAction(async delegate()
+            return DoAction(delegate()
             {
                 Order newOrder = new Order(orderModel);
                 _db.Orders.Add(newOrder);
-                await _db.SaveChangesAsync();
+                _db.SaveChangesAsync();
             });
 
 

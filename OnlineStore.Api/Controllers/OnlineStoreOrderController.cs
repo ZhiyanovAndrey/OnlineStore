@@ -29,7 +29,7 @@ namespace OnlineStore.Api.Controllers
 
             if (orderModel != null)
             {
-                Task<string> result = _Services.CreateOrder(orderModel);
+                string result = _Services.CreateOrder(orderModel);
                 return result == null ? NotFound() : Ok(result);
             }
           ;
@@ -47,11 +47,9 @@ namespace OnlineStore.Api.Controllers
             // Where(x => x.Age >= userParameter.MinAgeFilter && x.Age <= userParameter.MaxAgeFilter)
             var orders = _db.Orders.Include(o => o.Customer)
                 .Where(c => c.Customerid == CustomerId)
-                .Where(o => o.Orderdate >= dateStart.Date && o.Orderdate <= dateEnd.Date)
+                //.Where(o => o.Orderdate >= dateStart.Date && o.Orderdate <= dateEnd.Date)
                 .OrderBy(o => o.Orderdate);
             return await orders.ToListAsync();
-
-
           
         }
 
