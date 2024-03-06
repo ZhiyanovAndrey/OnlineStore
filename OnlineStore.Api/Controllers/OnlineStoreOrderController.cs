@@ -22,27 +22,36 @@ namespace OnlineStore.Api.Controllers
 
 
         [HttpPost]
-        public IActionResult CreateOrder([FromBody] OrderpositionModel orderModel)
+        public IActionResult CreateOrder([FromBody] OrderModel orderModel)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
 
             if (orderModel != null)
             {
                 string result = _Services.CreateOrder(orderModel);
-                return Ok(result); //result == null ? NotFound() :
+                return Ok(result); 
             }
           ;
             return BadRequest();
         }
 
+        [HttpPost]
+        public IActionResult CreateOrderPosition([FromBody] OrderPositionModel orderPositionModel)
+        {
 
+            if (orderPositionModel != null)
+            {
+                string result = _Services.CreateOrderPosition(orderPositionModel);
+                return Ok(result);
+            }
+            ;
+            return BadRequest();
+        }
 
 
         //  4)	Метод получения списка заказов по конкретному клиенту за выбранный временной период,
         //  отсортированный по дате создания.
         [HttpGet("orders/{CustomerId}")]
-        public async Task<IEnumerable<OrderpositionModel>> GetOrdersByCustomeer(int CustomerId, DateTime dateStart, DateTime dateEnd) // или использовать onlyDate
+        public async Task<IEnumerable<OrderModel>> GetOrdersByCustomeer(int CustomerId, DateTime dateStart, DateTime dateEnd) // или использовать onlyDate
         {
             return await _Services.GetOrderByCustomer(CustomerId, dateStart, dateEnd);
 

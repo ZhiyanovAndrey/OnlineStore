@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OnlineStore.Models
 {
-    public class OrderpositionModel
+    public class OrderModel
     {
         public int Orderid { get; set; }
 

@@ -22,7 +22,7 @@ namespace OnlineStore.Models
         [RegularExpression (pattern: @"^\d{10}$", ErrorMessage = "Номер телефона должен содержать только 10 цифр")]
         public string Phone { get; set; }
 
-        public List<OrderpositionModel> AllOrder { get; set; } = new List<OrderpositionModel>();
+        public List<OrderModel> AllOrder { get; set; } = new List<OrderModel>();
 
         public CustomerModel() { }
 

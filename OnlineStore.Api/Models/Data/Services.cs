@@ -34,7 +34,7 @@ namespace OnlineStore.Api.Models.Data
         }
 
         //	Метод добавления заказа
-        public string CreateOrder(OrderpositionModel orderModel)
+        public string CreateOrder(OrderModel orderModel)
         {
 
                if (_db.Customers.FirstOrDefault(c => c.Customerid == orderModel.Customerid) != null) 
@@ -54,14 +54,15 @@ namespace OnlineStore.Api.Models.Data
 
         }
 
-        public string CreateOrderPosition(OrderpositionModel orderModel)
+        //	Метод формирования заказа
+        public string CreateOrderPosition(OrderPositionModel orderPositionModel)
         {
 
                 return DoAction(delegate ()
                 {
 
-                    Order newOrder = new Order(orderModel);
-                    _db.Orders.Add(newOrder);
+                    Orderposition newOrderPosition = new Orderposition(orderPositionModel);
+                    _db.Orderpositions.Add(newOrderPosition);
                     _db.SaveChangesAsync();
                 });
 
@@ -128,7 +129,7 @@ namespace OnlineStore.Api.Models.Data
         }
 
         //	Метод получения списка заказов по конкретному клиенту за выбранный временной период, отсортированный по дате создания.
-        public async Task<IEnumerable<OrderpositionModel>> GetOrderByCustomer(int CustomerId, DateTime dateStart, DateTime dateEnd)
+        public async Task<IEnumerable<OrderModel>> GetOrderByCustomer(int CustomerId, DateTime dateStart, DateTime dateEnd)
         {
             var orders = _db.Orders.Include(o => o.Customer)
                 .Where(c => c.Customerid == CustomerId)
