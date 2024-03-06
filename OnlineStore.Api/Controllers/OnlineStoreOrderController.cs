@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using OnlineStore.Api.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 using OnlineStore.Api.Models.Data;
 using OnlineStore.Models;
 
@@ -34,18 +31,7 @@ namespace OnlineStore.Api.Controllers
             return BadRequest();
         }
 
-        [HttpPost]
-        public IActionResult CreateOrderPosition([FromBody] OrderPositionModel orderPositionModel)
-        {
 
-            if (orderPositionModel != null)
-            {
-                string result = _Services.CreateOrderPosition(orderPositionModel);
-                return Ok(result);
-            }
-            ;
-            return BadRequest();
-        }
 
 
         //  4)	Метод получения списка заказов по конкретному клиенту за выбранный временной период,
@@ -59,10 +45,6 @@ namespace OnlineStore.Api.Controllers
 
 
 
-
-
-        // 5)	Метод формирования заказа с проверкой наличия требуемого количества товара на складе,
-        // а также уменьшение доступного количества товара на складе в БД в случае успешного создания заказа.
 
 
 
