@@ -25,7 +25,12 @@ namespace OnlineStore.Api.Controllers
 
             if (orderPositionModel != null)
             {
+
+
                 string result = _Services.CreateOrderPosition(orderPositionModel);
+
+
+
                 return Ok(result);
             }
             ;

@@ -37,18 +37,18 @@ namespace OnlineStore.Api.Models.Data
         public string CreateOrder(OrderModel orderModel)
         {
 
-               if (_db.Customers.FirstOrDefault(c => c.Customerid == orderModel.Customerid) != null) 
+            if (_db.Customers.FirstOrDefault(c => c.Customerid == orderModel.Customerid) != null)
+            {
+
+                return DoAction(delegate ()
                 {
 
-            return DoAction(delegate()
-            {
-                
-                Order newOrder = new Order(orderModel);
-                _db.Orders.Add(newOrder);
-                _db.SaveChangesAsync();
-            });
-                }
-                return $"Пользователь с номером {orderModel.Customerid} не найден";
+                    Order newOrder = new Order(orderModel);
+                    _db.Orders.Add(newOrder);
+                    _db.SaveChanges();
+                });
+            }
+            return $"Пользователь с номером {orderModel.Customerid} не найден";
 
 
 
@@ -58,13 +58,21 @@ namespace OnlineStore.Api.Models.Data
         public string CreateOrderPosition(OrderPositionModel orderPositionModel)
         {
 
-                return DoAction(delegate ()
-                {
 
-                    Orderposition newOrderPosition = new Orderposition(orderPositionModel);
-                    _db.Orderpositions.Add(newOrderPosition);
-                    _db.SaveChangesAsync();
-                });
+
+
+            return DoAction(delegate ()
+            {
+
+
+                // выберем продукт по Productid и умножить на orderPositionModel.Quantity;
+                Product product = _db.Products.FirstOrDefault(p => p.Productid == orderPositionModel.Productid);
+                orderPositionModel.Unitprice = (decimal)product.Unitprice * orderPositionModel.Quantity;
+                Orderposition newOrderPosition = new Orderposition(orderPositionModel);
+
+                _db.Orderpositions.Add(newOrderPosition);
+                _db.SaveChangesAsync();
+            });
 
         }
 
@@ -135,13 +143,13 @@ namespace OnlineStore.Api.Models.Data
                 .Where(c => c.Customerid == CustomerId)
                 //.Where(o => o.Orderdate >= dateStart.Date && o.Orderdate <= dateEnd.Date)
                 .OrderBy(o => o.Orderdate);
-         
+
             return await orders.Select(d => d.ToDto()).ToListAsync();
         }
 
 
 
-           
+
 
         /* Метод формирования заказа с проверкой наличия требуемого количества товара на складе,
          * а также уменьшение доступного количества товара на складе в БД в случае успешного создания заказа.*/
