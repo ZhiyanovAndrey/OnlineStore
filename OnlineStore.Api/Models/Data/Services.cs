@@ -59,21 +59,35 @@ namespace OnlineStore.Api.Models.Data
         {
 
 
+            Order order = _db.Orders.FirstOrDefault(o => o.Orderid == orderPositionModel.Orderid);
 
+            Product product = _db.Products.FirstOrDefault(p => p.Productid == orderPositionModel.Productid);
 
-            return DoAction(delegate ()
+            if (order != null)
             {
+                if (product != null)
+                {
+                    // выберем продукт по Productid и умножим цену на ко-во orderPositionModel.Quantity;
+                    orderPositionModel.Unitprice = (decimal)product.Unitprice * orderPositionModel.Quantity;
 
 
-                // выберем продукт по Productid и умножить на orderPositionModel.Quantity;
-                Product product = _db.Products.FirstOrDefault(p => p.Productid == orderPositionModel.Productid);
-                orderPositionModel.Unitprice = (decimal)product.Unitprice * orderPositionModel.Quantity;
-                Orderposition newOrderPosition = new Orderposition(orderPositionModel);
+                    // выберем продукт проверим количество и убавим из него нужное 
 
-                _db.Orderpositions.Add(newOrderPosition);
-                _db.SaveChangesAsync();
-            });
 
+                    return DoAction(delegate ()
+                    {
+
+                        Orderposition newOrderPosition = new Orderposition(orderPositionModel);
+                        _db.Orderpositions.Add(newOrderPosition);
+                        _db.SaveChangesAsync();
+
+
+                    });
+
+                }
+                return $"Продукт с номером {orderPositionModel.Productid} не найден";
+            }
+            return $"Заказ с номером {orderPositionModel.Orderid} не найден";
         }
 
         //	Метод удаления клиента
@@ -103,7 +117,8 @@ namespace OnlineStore.Api.Models.Data
         }
 
 
-        //  Метод получения списка товаров, с возможностью фильтрации по типу товара и/или по наличию на складе и сортировки по цене(возрастанию и убыванию).
+        /*  Метод получения списка товаров, с возможностью фильтрации по типу товара 
+         *  и/или по наличию на складе и сортировки по цене(возрастанию и убыванию).*/
 
         public async Task<IEnumerable<Product>> GetProductsWithSort(string sortOrder)
         {
