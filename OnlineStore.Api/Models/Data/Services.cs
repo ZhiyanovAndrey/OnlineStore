@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using OnlineStore.Models;
-using System.Text.RegularExpressions;
 
 namespace OnlineStore.Api.Models.Data
 {
@@ -54,7 +52,9 @@ namespace OnlineStore.Api.Models.Data
 
         }
 
-        //	Метод формирования заказа
+
+        /* 5.Метод формирования заказа с проверкой наличия требуемого количества товара на складе,
+         * а также уменьшение доступного количества товара на складе в БД в случае успешного создания заказа.*/
         public string CreateOrderPosition(OrderPositionModel orderPositionModel)
         {
 
@@ -71,19 +71,25 @@ namespace OnlineStore.Api.Models.Data
                     orderPositionModel.Unitprice = (decimal)product.Unitprice * orderPositionModel.Quantity;
 
 
-                    // выберем продукт проверим количество и убавим из него нужное 
-
-
-                    return DoAction(delegate ()
+                    // выберем продукт проверим количество и убавим из него Quantity
+                    if (product.Unitsinstock >= orderPositionModel.Quantity)
                     {
+                        var a = product.Unitsinstock;
+                        var b = orderPositionModel.Quantity;
+                        product.Unitsinstock = a - b;
 
-                        Orderposition newOrderPosition = new Orderposition(orderPositionModel);
-                        _db.Orderpositions.Add(newOrderPosition);
-                        _db.SaveChangesAsync();
+                        return DoAction(delegate ()
+                        {
+
+                            Orderposition newOrderPosition = new Orderposition(orderPositionModel);
+                            _db.Orderpositions.Add(newOrderPosition);
+                            _db.Products.Update(product);
+                            _db.SaveChangesAsync();
 
 
                     });
-
+                }
+                    return $"Продукт в количестве {orderPositionModel.Quantity} отсутствует";
                 }
                 return $"Продукт с номером {orderPositionModel.Productid} не найден";
             }
@@ -108,7 +114,7 @@ namespace OnlineStore.Api.Models.Data
         }
 
 
-        //	Метод получения клиента по номеру телефона.
+        //	2.Метод получения клиента по номеру телефона.
 
         public CustomerModel GetCustomerByPhone(string phone)
         {
@@ -117,7 +123,7 @@ namespace OnlineStore.Api.Models.Data
         }
 
 
-        /*  Метод получения списка товаров, с возможностью фильтрации по типу товара 
+        /*  3.Метод получения списка товаров, с возможностью фильтрации по типу товара 
          *  и/или по наличию на складе и сортировки по цене(возрастанию и убыванию).*/
 
         public async Task<IEnumerable<Product>> GetProductsWithSort(string sortOrder)
@@ -151,37 +157,25 @@ namespace OnlineStore.Api.Models.Data
             return await products.ToListAsync();
         }
 
-        //	Метод получения списка заказов по конкретному клиенту за выбранный временной период, отсортированный по дате создания.
+        // 4.Метод получения списка заказов по конкретному клиенту за выбранный временной период, отсортированный по дате создания.
         public async Task<IEnumerable<OrderModel>> GetOrderByCustomer(int CustomerId, DateTime dateStart, DateTime dateEnd)
         {
+
+            //if (_db.Customers.FirstOrDefault(c => c.Customerid == CustomerId) != null)
+            //{
             var orders = _db.Orders.Include(o => o.Customer)
                 .Where(c => c.Customerid == CustomerId)
                 //.Where(o => o.Orderdate >= dateStart.Date && o.Orderdate <= dateEnd.Date)
                 .OrderBy(o => o.Orderdate);
 
             return await orders.Select(d => d.ToDto()).ToListAsync();
+            //}
+            //return $"Пользователь с номером {CustomerId} не найден";
         }
 
 
 
 
-
-        /* Метод формирования заказа с проверкой наличия требуемого количества товара на складе,
-         * а также уменьшение доступного количества товара на складе в БД в случае успешного создания заказа.*/
-
-
-
-
-
-        //	Прочие методы, на усмотрение кандидата.
-
-
-        //// валидация номера телефона
-        //        private void PreviewTextInput(object sender, TextCompositionEventArgs e)
-        //        {
-        //            Regex regex = new Regex("[^0-9]+");
-        //            e.Handled = regex.IsMatch(e.Text);
-        //        }
 
 
 
