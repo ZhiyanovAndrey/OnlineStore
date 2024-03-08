@@ -82,9 +82,9 @@ namespace OnlineStore.Api.Models.Data
                         {
 
                             Orderposition newOrderPosition = new Orderposition(orderPositionModel);
-                            _db.Orderpositions.Add(newOrderPosition);
-                            _db.Products.Update(product);
-                            _db.SaveChangesAsync();
+                        _db.Orderpositions.Add(newOrderPosition);
+                        _db.Products.Update(product);
+                        _db.SaveChanges();
 
 
                     });
