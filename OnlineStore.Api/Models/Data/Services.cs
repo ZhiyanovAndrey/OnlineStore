@@ -165,7 +165,7 @@ namespace OnlineStore.Api.Models.Data
             //{
             var orders = _db.Orders.Include(o => o.Customer)
                 .Where(c => c.Customerid == CustomerId)
-                //.Where(o => o.Orderdate >= dateStart.Date && o.Orderdate <= dateEnd.Date)
+                .Where(o => o.Orderdate >= dateStart.Date && o.Orderdate <= dateEnd.Date)
                 .OrderBy(o => o.Orderdate);
 
             return await orders.Select(d => d.ToDto()).ToListAsync();
