@@ -116,10 +116,10 @@ namespace OnlineStore.Api.Models.Data
 
         //	2.Метод получения клиента по номеру телефона.
 
-        public CustomerModel GetCustomerByPhone(string phone)
+        public IEnumerable<CustomerModel> GetCustomerByPhone(string phone)
         {
-            Customer customer = _db.Customers.FirstOrDefault(c => c.Phone == phone);
-            return customer?.ToDto();
+            return  _db.Customers.Where(c => c.Phone == phone).Select(u => u.ToDto()).ToList();
+             
         }
 
 
