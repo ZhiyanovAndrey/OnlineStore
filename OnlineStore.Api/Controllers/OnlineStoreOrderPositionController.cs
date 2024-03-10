@@ -8,12 +8,12 @@ namespace OnlineStore.Api.Controllers
     [ApiController]
     public class OnlineStoreOrderPositionController : ControllerBase
     {
-        private readonly OnlineStoreContext _db;
+     
         private readonly Services _Services;
 
         public OnlineStoreOrderPositionController(OnlineStoreContext db)
         {
-            _db = db;
+           
             _Services = new Services(db);
         }
 

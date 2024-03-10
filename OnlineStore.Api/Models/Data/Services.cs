@@ -38,12 +38,12 @@ namespace OnlineStore.Api.Models.Data
             if (_db.Customers.FirstOrDefault(c => c.Customerid == orderModel.Customerid) != null)
             {
 
-                return DoAction(delegate ()
+                return DoAction(async delegate ()
                 {
 
                     Order newOrder = new Order(orderModel);
                     _db.Orders.Add(newOrder);
-                    _db.SaveChanges();
+                    await _db.SaveChangesAsync();
                 });
             }
             return $"Пользователь с номером {orderModel.Customerid} не найден";
@@ -125,7 +125,7 @@ namespace OnlineStore.Api.Models.Data
 
         /*  3.Метод получения списка товаров, с возможностью фильтрации по типу товара 
          *  и/или по наличию на складе и сортировки по цене(возрастанию и убыванию).*/
-
+        
         public async Task<IEnumerable<Product>> GetProductsWithSort(string sortOrder)
         {
             var products = _db.Products.Select(u => u);

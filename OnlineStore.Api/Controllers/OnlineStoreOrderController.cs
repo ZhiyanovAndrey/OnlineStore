@@ -8,24 +8,24 @@ namespace OnlineStore.Api.Controllers
     [ApiController]
     public class OnlineStoreOrderController : ControllerBase
     {
-        private readonly OnlineStoreContext _db;
+ 
         private readonly Services _Services;
 
         public OnlineStoreOrderController(OnlineStoreContext db)
         {
-            _db = db;
+           
             _Services = new Services(db);
         }
 
 
         [HttpPost]
-        public IActionResult CreateOrder([FromBody] OrderModel orderModel)
+        public  IActionResult CreateOrder([FromBody] OrderModel orderModel)
         {
 
             if (orderModel != null)
             {
-                string result = _Services.CreateOrder(orderModel);
-                return Ok(result); 
+               string result = _Services.CreateOrder(orderModel);
+               return Ok(result); 
             }
           ;
             return BadRequest();
