@@ -55,16 +55,17 @@ namespace OnlineStore.Api.Controllers
 
         // 2)	Метод получения клиента по номеру телефона.
 
-        [HttpGet("{id}")]
-        public IActionResult GetCustomerByPhone(string id)
+        [HttpGet("{phone}")]
+        public IActionResult GetCustomerByPhone(string phone)
         {
-            var customer = _Services.GetCustomerByPhone(id);
+            var customer = _Services.GetCustomerByPhone(phone);
 
             return customer == null ? NotFound() : Ok(customer);
         }
 
         // Метод получения всех покупателей
         [HttpGet("customers")]
+        [ResponseCache(Location = ResponseCacheLocation.Client, Duration = 30)]
         public async Task<IEnumerable<CustomerModel>> GetCustomers()
         {
             return await _db.Customers.OrderBy(p => p.Lastname).Select(u => u.ToDto()).ToListAsync();
@@ -82,6 +83,7 @@ namespace OnlineStore.Api.Controllers
         //3) Метод получения списка товаров, с возможностью фильтрации по типу товара и/или по наличию на складе и сортировки по цене (возрастанию и убыванию).
 
         [HttpGet("products/{sortOrder}")]
+        [ResponseCache(Location = ResponseCacheLocation.Client, Duration = 30)]
         public async Task<IEnumerable<Product>> GetProducts(string sortOrder)
         {
             return await _Services.GetProductsWithSort(sortOrder);
@@ -90,6 +92,7 @@ namespace OnlineStore.Api.Controllers
        
 
         [HttpGet("products/filter/{CategoryId}")]
+        [ResponseCache(Location = ResponseCacheLocation.Client, Duration = 30)]
         public async Task<IEnumerable<Category>> GetProductsByCategory(int CategoryId)
         {
 

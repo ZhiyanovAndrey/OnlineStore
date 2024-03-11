@@ -116,9 +116,9 @@ namespace OnlineStore.Api.Models.Data
 
         //	2.Метод получения клиента по номеру телефона.
 
-        public IEnumerable<CustomerModel> GetCustomerByPhone(string phone)
+        public CustomerModel GetCustomerByPhone(string phone)
         {
-            return  _db.Customers.Where(c => c.Phone == phone).Select(u => u.ToDto()).ToList();
+            return  _db.Customers.FirstOrDefault(c => c.Phone == phone).ToDto();
              
         }
 
