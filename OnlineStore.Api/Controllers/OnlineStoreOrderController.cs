@@ -31,7 +31,13 @@ namespace OnlineStore.Api.Controllers
             return BadRequest();
         }
 
+        [HttpDelete("{id}")]
+        public IActionResult DeleteOrder(int id)
+        {
+            string result = _Services.DeleteOrder(id);
+            return result == null ? NotFound() : Ok(result);
 
+        }
 
 
         //  4)	Метод получения списка заказов по конкретному клиенту за выбранный временной период,

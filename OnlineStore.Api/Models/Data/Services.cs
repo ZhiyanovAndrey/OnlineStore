@@ -96,22 +96,8 @@ namespace OnlineStore.Api.Models.Data
             return $"Заказ с номером {orderPositionModel.Orderid} не найден";
         }
 
-        //	Метод удаления клиента
-        public string Delete(int id)
-        {
-            Customer customer = _db.Customers.FirstOrDefault(c => c.Customerid == id);
-            if (customer != null)
-            {
-                return DoAction(delegate ()
-                {
-                    _db.Customers.Remove(customer);
-                    _db.SaveChanges();
 
-                });
 
-            }
-            return $"Пользователь с номером {id} не найден";
-        }
 
 
         //	2.Метод получения клиента по номеру телефона.
@@ -177,6 +163,39 @@ namespace OnlineStore.Api.Models.Data
 
 
 
+        
+        public string DeleteCustomer(int id)
+        {
+            Customer customer = _db.Customers.FirstOrDefault(c => c.Customerid == id);
+            if (customer != null)
+            {
+                return DoAction(delegate ()
+                {
+                    _db.Customers.Remove(customer);
+                    _db.SaveChanges();
+
+                });
+
+            }
+            return $"Пользователь с номером {id} не найден";
+        }
+
+       
+        public string DeleteOrder(int id)
+        {
+            Customer customer = _db.Customers.FirstOrDefault(c => c.Customerid == id);
+            if (customer != null)
+            {
+                return DoAction(delegate ()
+                {
+                    _db.Customers.Remove(customer);
+                    _db.SaveChanges();
+
+                });
+
+            }
+            return $"Пользователь с номером {id} не найден";
+        }
 
 
 
@@ -184,7 +203,7 @@ namespace OnlineStore.Api.Models.Data
         {
             try
             {
-                action.Invoke(); // вызываем методы сообщенные с делегатом
+                action.Invoke();
                 return $"Выполнено";
             }
             catch (Exception ex)
