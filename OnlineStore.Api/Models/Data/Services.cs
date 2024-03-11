@@ -183,18 +183,18 @@ namespace OnlineStore.Api.Models.Data
        
         public string DeleteOrder(int id)
         {
-            Customer customer = _db.Customers.FirstOrDefault(c => c.Customerid == id);
-            if (customer != null)
+            Order  order = _db.Orders.FirstOrDefault(c => c.Orderid == id);
+            if (order != null)
             {
                 return DoAction(delegate ()
                 {
-                    _db.Customers.Remove(customer);
-                    _db.SaveChanges();
+                    _db.Orders.Remove(order);
+                    _db.SaveChangesAsync();
 
                 });
 
             }
-            return $"Пользователь с номером {id} не найден";
+            return $"Заказ с номером {id} не найден";
         }
 
 
