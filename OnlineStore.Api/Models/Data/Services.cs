@@ -24,7 +24,7 @@ namespace OnlineStore.Api.Models.Data
                 Customer newCustomer = new Customer(customerModel.Lastname, customerModel.Firstname, customerModel.Firdname,
                 customerModel.Phone);
                 _db.Customers.Add(newCustomer);
-                _db.SaveChangesAsync();
+                _db.SaveChanges();
             });
 
 
@@ -38,12 +38,12 @@ namespace OnlineStore.Api.Models.Data
             if (_db.Customers.FirstOrDefault(c => c.Customerid == orderModel.Customerid) != null)
             {
 
-                return DoAction(async delegate ()
+                return DoAction(delegate ()
                 {
 
                     Order newOrder = new Order(orderModel);
                     _db.Orders.Add(newOrder);
-                    await _db.SaveChangesAsync();
+                    _db.SaveChanges();
                 });
             }
             return $"Пользователь с номером {orderModel.Customerid} не найден";
@@ -82,13 +82,13 @@ namespace OnlineStore.Api.Models.Data
                         {
 
                             Orderposition newOrderPosition = new Orderposition(orderPositionModel);
-                        _db.Orderpositions.Add(newOrderPosition);
-                        _db.Products.Update(product);
-                        _db.SaveChanges();
+                            _db.Orderpositions.Add(newOrderPosition);
+                            _db.Products.Update(product);
+                            _db.SaveChanges();
 
 
-                    });
-                }
+                        });
+                    }
                     return $"Продукт в количестве {orderPositionModel.Quantity} отсутствует";
                 }
                 return $"Продукт с номером {orderPositionModel.Productid} не найден";
@@ -118,14 +118,15 @@ namespace OnlineStore.Api.Models.Data
 
         public CustomerModel GetCustomerByPhone(string phone)
         {
-            return  _db.Customers.FirstOrDefault(c => c.Phone == phone).ToDto();
-             
+
+            var customer = _db.Customers.FirstOrDefault(c => c.Phone == phone);
+            return customer?.ToDto();
         }
 
 
         /*  3.Метод получения списка товаров, с возможностью фильтрации по типу товара 
          *  и/или по наличию на складе и сортировки по цене(возрастанию и убыванию).*/
-        
+
         public async Task<IEnumerable<Product>> GetProductsWithSort(string sortOrder)
         {
             var products = _db.Products.Select(u => u);
