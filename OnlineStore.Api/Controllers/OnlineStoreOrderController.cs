@@ -37,6 +37,7 @@ namespace OnlineStore.Api.Controllers
         //  4)	Метод получения списка заказов по конкретному клиенту за выбранный временной период,
         //  отсортированный по дате создания.
         [HttpGet("[action]")]
+        [ResponseCache(Location = ResponseCacheLocation.Client, Duration = 60)]
         public async Task<IEnumerable<OrderModel>> GetOrdersByCustomeer(int CustomerId, DateTime dateStart, DateTime dateEnd) // или использовать onlyDate
         {
             return await _Services.GetOrderByCustomer(CustomerId, dateStart, dateEnd);

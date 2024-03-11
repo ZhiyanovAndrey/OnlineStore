@@ -56,7 +56,7 @@ namespace OnlineStore.Api.Controllers
         // 2)	Метод получения клиента по номеру телефона.
 
         [HttpGet("customers/{phone}")]
-        [ResponseCache(Location = ResponseCacheLocation.Client, Duration = 300)]
+        [ResponseCache(Location = ResponseCacheLocation.Client, Duration = 60)]
         public IActionResult GetCustomerByPhone(string phone)
         {
             var customer = _Services.GetCustomerByPhone(phone);
