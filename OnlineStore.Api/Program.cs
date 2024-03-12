@@ -9,6 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
+// добавляем swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+
 
 // отображение даты и времени в PSQL
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true); 
@@ -24,6 +29,15 @@ builder.Services.AddDbContext<OnlineStoreContext>(options =>
 );
 
 var app = builder.Build();
+
+// добавим midleware for swagger
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+
 
 // Configure the HTTP request pipeline.
 
