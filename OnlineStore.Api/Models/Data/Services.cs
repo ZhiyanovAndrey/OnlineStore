@@ -67,7 +67,7 @@ namespace OnlineStore.Api.Models.Data
             {
                 if (product != null)
                 {
-                    // выберем продукт по Productid и умножим цену на ко-во orderPositionModel.Quantity;
+                    // выберем продукт по Productid и умножим цену на кол-во orderPositionModel.Quantity;
                     orderPositionModel.Unitprice = (decimal)product.Unitprice * orderPositionModel.Quantity;
 
 
@@ -163,7 +163,7 @@ namespace OnlineStore.Api.Models.Data
 
 
 
-        
+
         public string DeleteCustomer(int id)
         {
             Customer customer = _db.Customers.FirstOrDefault(c => c.Customerid == id);
@@ -180,18 +180,23 @@ namespace OnlineStore.Api.Models.Data
             return $"Пользователь с номером {id} не найден";
         }
 
-       
-        public string DeleteOrder(int id)
+
+        public async Task <string> DeleteOrder(int id)
         {
-            Order  order = _db.Orders.FirstOrDefault(c => c.Orderid == id);
+            Order order = _db.Orders.FirstOrDefault(c => c.Orderid == id);
             if (order != null)
             {
-                return DoAction(delegate ()
+                try
                 {
                     _db.Orders.Remove(order);
-                    _db.SaveChangesAsync();
+                    await _db.SaveChangesAsync();
+                    return "Выполнено";
+                }
+                catch (Exception ex)
+                {
+                    return ex.Message;
+                }
 
-                });
 
             }
             return $"Заказ с номером {id} не найден";

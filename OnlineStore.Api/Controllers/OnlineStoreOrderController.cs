@@ -34,7 +34,7 @@ namespace OnlineStore.Api.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteOrder(int id)
         {
-            string result = _Services.DeleteOrder(id);
+            Task<string> result = _Services.DeleteOrder(id);
             return result == null ? NotFound() : Ok(result);
 
         }
