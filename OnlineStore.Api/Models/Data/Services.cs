@@ -32,19 +32,18 @@ namespace OnlineStore.Api.Models.Data
         }
 
         //	Метод добавления заказа
-        public string CreateOrder(OrderModel orderModel)
+        public async Task<string> CreateOrder(OrderModel orderModel)
         {
 
             if (_db.Customers.FirstOrDefault(c => c.Customerid == orderModel.Customerid) != null)
             {
 
-                return DoAction(delegate ()
-                {
+             
 
                     Order newOrder = new Order(orderModel);
                     _db.Orders.Add(newOrder);
-                    _db.SaveChanges();
-                });
+                    await _db.SaveChangesAsync();
+              
             }
             return $"Пользователь с номером {orderModel.Customerid} не найден";
 
@@ -57,7 +56,6 @@ namespace OnlineStore.Api.Models.Data
          * а также уменьшение доступного количества товара на складе в БД в случае успешного создания заказа.*/
         public string CreateOrderPosition(OrderPositionModel orderPositionModel)
         {
-
 
             Order order = _db.Orders.FirstOrDefault(o => o.Orderid == orderPositionModel.Orderid);
 
@@ -208,7 +206,7 @@ namespace OnlineStore.Api.Models.Data
         {
             try
             {
-                action.Invoke();
+               action.Invoke();
                 return $"Выполнено";
             }
             catch (Exception ex)

@@ -17,19 +17,22 @@ namespace OnlineStore.Api.Controllers
             _Services = new Services(db);
         }
 
-
+        // асинхронность дает ошибку сервера 500, но создает
         [HttpPost]
         public  IActionResult CreateOrder([FromBody] OrderModel orderModel)
         {
 
             if (orderModel != null)
             {
-               string result = _Services.CreateOrder(orderModel);
+               Task<string> result = _Services.CreateOrder(orderModel);
                return Ok(result); 
             }
-          ;
             return BadRequest();
         }
+
+
+        // возврашает всегда 200 OK
+        // асинхронность дает ошибку сервера 500, но удаляет
 
         [HttpDelete("{id}")]
         public IActionResult DeleteOrder(int id)

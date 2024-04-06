@@ -35,7 +35,7 @@ namespace OnlineStore.Api.Controllers
 
                 return Ok(result);
             }
-            ;
+            
             return BadRequest();
         }
 
