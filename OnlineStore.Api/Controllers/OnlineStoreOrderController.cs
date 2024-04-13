@@ -8,16 +8,16 @@ namespace OnlineStore.Api.Controllers
     [ApiController]
     public class OnlineStoreOrderController : ControllerBase
     {
- 
+
         private readonly Services _Services;
 
         public OnlineStoreOrderController(OnlineStoreContext db)
         {
-           
+
             _Services = new Services(db);
         }
 
-        // асинхронность дает ошибку сервера 500, но создает
+
         [HttpPost]
         public async Task<IActionResult> CreateOrderAsync([FromBody] OrderModel orderModel)
         {
@@ -26,8 +26,8 @@ namespace OnlineStore.Api.Controllers
             {
                 try
                 {
-               var result = await _Services.CreateOrder(orderModel);
-               return Ok(result); 
+                    var result = await _Services.CreateOrder(orderModel);
+                    return Ok(result);
 
                 }
                 catch (Exception ex)
@@ -40,8 +40,6 @@ namespace OnlineStore.Api.Controllers
         }
 
 
-        // возврашает всегда 200 OK
-        // асинхронность дает ошибку сервера 500, но удаляет
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrderAsync(int id)
@@ -51,7 +49,7 @@ namespace OnlineStore.Api.Controllers
 
         }
 
-      
+
         //  4)	Метод получения списка заказов по конкретному клиенту за выбранный временной период,
         //  отсортированный по дате создания.
         [HttpGet("[action]")]

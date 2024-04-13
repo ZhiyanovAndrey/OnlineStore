@@ -30,14 +30,14 @@ namespace OnlineStore.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateCustomer([FromBody] CustomerModel customerModel)
+        public async Task<IActionResult> CreateCustomerAsync([FromBody] CustomerModel customerModel)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             if (customerModel != null)
             {
-                string result = _Services.CreateCustomer(customerModel);
+                var result = await _Services.CreateCustomerAsync(customerModel);
                 return result == null ? NotFound() : Ok(result);
             }
           ;
