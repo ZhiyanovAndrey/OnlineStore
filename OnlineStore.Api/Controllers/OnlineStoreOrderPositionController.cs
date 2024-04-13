@@ -29,7 +29,7 @@ namespace OnlineStore.Api.Controllers
             {
 
 
-                string result = _Services.CreateOrderPosition(orderPositionModel);
+                var result = _Services.CreateOrderPosition(orderPositionModel);
 
 
 

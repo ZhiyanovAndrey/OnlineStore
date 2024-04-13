@@ -39,6 +39,7 @@ if (app.Environment.IsDevelopment())
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1"); 
  // „тобы предоставить пользовательский интерфейс Swagger в корневом каталоге приложени€ (https://localhost:<port>/)
         options.RoutePrefix = string.Empty;
+        //options.SerializeAsV2 = true;
     }); 
 }
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using OnlineStore.Models;
 
 namespace OnlineStore.Api.Models.Data
@@ -54,7 +55,7 @@ namespace OnlineStore.Api.Models.Data
 
         /* 5.Метод формирования заказа с проверкой наличия требуемого количества товара на складе,
          * а также уменьшение доступного количества товара на складе в БД в случае успешного создания заказа.*/
-        public string CreateOrderPosition(OrderPositionModel orderPositionModel)
+        public IActionResult CreateOrderPosition(OrderPositionModel orderPositionModel)
         {
 
             Order order = _db.Orders.FirstOrDefault(o => o.Orderid == orderPositionModel.Orderid);
@@ -76,8 +77,8 @@ namespace OnlineStore.Api.Models.Data
                         var b = orderPositionModel.Quantity;
                         product.Unitsinstock = a - b;
 
-                        return DoAction(delegate ()
-                        {
+                        //return DoAction(delegate ()
+                        //{
 
                             Orderposition newOrderPosition = new Orderposition(orderPositionModel);
                             _db.Orderpositions.Add(newOrderPosition);
@@ -85,9 +86,10 @@ namespace OnlineStore.Api.Models.Data
                             _db.SaveChanges();
 
 
-                        });
+                        //});
                     }
-                    return $"Продукт в количестве {orderPositionModel.Quantity} отсутствует";
+                    return NotFound();// $"Продукт в количестве {orderPositionModel.Quantity} отсутствует";
+
                 }
                 return $"Продукт с номером {orderPositionModel.Productid} не найден";
             }
