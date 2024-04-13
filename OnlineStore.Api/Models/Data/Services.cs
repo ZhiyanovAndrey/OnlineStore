@@ -33,29 +33,28 @@ namespace OnlineStore.Api.Models.Data
         }
 
         //	Метод добавления заказа
-        public async Task<string> CreateOrder(OrderModel orderModel)
+        public async Task<Order> CreateOrder(OrderModel orderModel)
         {
 
-            if (_db.Customers.FirstOrDefault(c => c.Customerid == orderModel.Customerid) != null)
+            if (await _db.Customers.FirstOrDefaultAsync(c => c.Customerid == orderModel.Customerid) == null)
             {
 
-             
-
-                    Order newOrder = new Order(orderModel);
-                    _db.Orders.Add(newOrder);
-                    await _db.SaveChangesAsync();
-              
+                throw new Exception("Пользователь не найден");
             }
-            return $"Пользователь с номером {orderModel.Customerid} не найден";
 
 
+            Order newOrder = new Order(orderModel);
+            await _db.Orders.AddAsync(newOrder);
+            await _db.SaveChangesAsync();
+
+            return newOrder;
 
         }
 
 
         /* 5.Метод формирования заказа с проверкой наличия требуемого количества товара на складе,
          * а также уменьшение доступного количества товара на складе в БД в случае успешного создания заказа.*/
-        public IActionResult CreateOrderPosition(OrderPositionModel orderPositionModel)
+        public string CreateOrderPosition(OrderPositionModel orderPositionModel)
         {
 
             Order order = _db.Orders.FirstOrDefault(o => o.Orderid == orderPositionModel.Orderid);
@@ -80,15 +79,15 @@ namespace OnlineStore.Api.Models.Data
                         //return DoAction(delegate ()
                         //{
 
-                            Orderposition newOrderPosition = new Orderposition(orderPositionModel);
-                            _db.Orderpositions.Add(newOrderPosition);
-                            _db.Products.Update(product);
-                            _db.SaveChanges();
+                        Orderposition newOrderPosition = new Orderposition(orderPositionModel);
+                        _db.Orderpositions.Add(newOrderPosition);
+                        _db.Products.Update(product);
+                        _db.SaveChanges();
 
 
                         //});
                     }
-                    return NotFound();// $"Продукт в количестве {orderPositionModel.Quantity} отсутствует";
+                    return $"Продукт в количестве {orderPositionModel.Quantity} отсутствует";
 
                 }
                 return $"Продукт с номером {orderPositionModel.Productid} не найден";
@@ -181,25 +180,25 @@ namespace OnlineStore.Api.Models.Data
         }
 
 
-        public async Task <string> DeleteOrder(int id)
+        public async Task<Order?> DeleteOrder(int id)
         {
-            Order order = _db.Orders.FirstOrDefault(c => c.Orderid == id);
+            Order? order = await _db.Orders.FirstOrDefaultAsync(c => c.Orderid == id);
             if (order != null)
             {
-                try
-                {
-                    _db.Orders.Remove(order);
-                    await _db.SaveChangesAsync();
-                    return "Выполнено";
-                }
-                catch (Exception ex)
-                {
-                    return ex.Message;
-                }
+                //try
+                //{
+                _db.Orders.Remove(order);
+                await _db.SaveChangesAsync();
+                //return "Выполнено";
+                //}
+                //catch (Exception ex)
+                //{
+                //    return ex.Message;
+                //}
 
 
             }
-            return $"Заказ с номером {id} не найден";
+            return order; //$"Заказ с номером {id} не найден";
         }
 
 
@@ -208,7 +207,7 @@ namespace OnlineStore.Api.Models.Data
         {
             try
             {
-               action.Invoke();
+                action.Invoke();
                 return $"Выполнено";
             }
             catch (Exception ex)

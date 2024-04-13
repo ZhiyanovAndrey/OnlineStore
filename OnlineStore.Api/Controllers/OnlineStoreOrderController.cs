@@ -19,13 +19,22 @@ namespace OnlineStore.Api.Controllers
 
         // асинхронность дает ошибку сервера 500, но создает
         [HttpPost]
-        public  IActionResult CreateOrder([FromBody] OrderModel orderModel)
+        public async Task<IActionResult> CreateOrderAsync([FromBody] OrderModel orderModel)
         {
 
             if (orderModel != null)
             {
-               Task<string> result = _Services.CreateOrder(orderModel);
+                try
+                {
+               var result = await _Services.CreateOrder(orderModel);
                return Ok(result); 
+
+                }
+                catch (Exception ex)
+                {
+
+                    return BadRequest(ex.Message);
+                }
             }
             return BadRequest();
         }
@@ -35,10 +44,10 @@ namespace OnlineStore.Api.Controllers
         // асинхронность дает ошибку сервера 500, но удаляет
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteOrder(int id)
+        public async Task<IActionResult> DeleteOrderAsync(int id)
         {
-            Task<string> result = _Services.DeleteOrder(id);
-            return result == null ? NotFound() : Ok(result);
+            var result = await _Services.DeleteOrder(id);
+            return result == null ? NotFound() : Ok();
 
         }
 
