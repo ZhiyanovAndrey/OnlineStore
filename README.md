@@ -1,9 +1,12 @@
 **REST API сервис заказной системы интернет магазина**
 
-C#
-EntityFramework
-PostgreSQL
-Swagger
+Стек Технологий:
+
+- C#
+- EntityFramework
+- PostgreSQL
+- Swagger
+- Кэширование данных
 
 Входные данные проходят валидацию:
 •	Номер телефона в 10-тизначном формате
