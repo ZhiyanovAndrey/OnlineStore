@@ -37,12 +37,41 @@ namespace OnlineStore.Api.Controllers
 
             if (customerModel != null)
             {
-                var result = await _Services.CreateCustomerAsync(customerModel);
-                return result == null ? NotFound() : Ok(result);
+                try
+                {
+                    var result = await _Services.CreateCustomerAsync(customerModel);
+                    return result == null ? NotFound() : Ok(result);
+
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
             }
           ;
             return BadRequest();
         }
+
+        public async Task<IActionResult> CreateOrderAsync([FromBody] OrderModel orderModel)
+        {
+
+            if (orderModel != null)
+            {
+                try
+                {
+                    var result = await _Services.CreateOrderAsync(orderModel);
+                    return Ok(result);
+
+                }
+                catch (Exception ex)
+                {
+
+                    return BadRequest(ex.Message);
+                }
+            }
+            return BadRequest();
+        }
+
 
         [HttpDelete("{id}")]
         public IActionResult DeleteCustomer(int id)
@@ -73,9 +102,9 @@ namespace OnlineStore.Api.Controllers
         }
 
         // Метод получения всех продуктов
-       
+
         [HttpGet("products")]
-        [ResponseCache (Location = ResponseCacheLocation.Client, Duration = 30)]
+        [ResponseCache(Location = ResponseCacheLocation.Client, Duration = 30)]
         public async Task<IEnumerable<Product>> Getproducts()
         {
             return await _db.Products.ToListAsync();
@@ -90,7 +119,7 @@ namespace OnlineStore.Api.Controllers
             return await _Services.GetProductsWithSort(sortOrder);
         }
 
-       
+
 
         [HttpGet("products/filter/{CategoryId}")]
         [ResponseCache(Location = ResponseCacheLocation.Client, Duration = 30)]

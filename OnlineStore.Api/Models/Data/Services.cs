@@ -21,8 +21,7 @@ namespace OnlineStore.Api.Models.Data
 
 
           
-                Customer newCustomer = new Customer(customerModel.Lastname, customerModel.Firstname, customerModel.Firdname,
-                customerModel.Phone);
+                Customer newCustomer = new Customer(customerModel);
                 await _db.Customers.AddAsync(newCustomer);
                 await _db.SaveChangesAsync();
 
@@ -32,13 +31,13 @@ namespace OnlineStore.Api.Models.Data
         }
 
         //	Метод добавления заказа
-        public async Task<Order> CreateOrder(OrderModel orderModel)
+        public async Task<Order> CreateOrderAsync(OrderModel orderModel)
         {
 
             if (await _db.Customers.FirstOrDefaultAsync(c => c.Customerid == orderModel.Customerid) == null)
             {
 
-                throw new Exception("Пользователь не найден");
+                throw new Exception($"Пользователь {orderModel.Customerid} не найден");
             }
 
 

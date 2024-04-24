@@ -26,7 +26,7 @@ namespace OnlineStore.Api.Controllers
             {
                 try
                 {
-                    var result = await _Services.CreateOrder(orderModel);
+                    var result = await _Services.CreateOrderAsync(orderModel);
                     return Ok(result);
 
                 }
