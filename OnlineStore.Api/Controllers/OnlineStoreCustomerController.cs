@@ -74,9 +74,10 @@ namespace OnlineStore.Api.Controllers
 
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteCustomer(int id)
+        public async Task<IActionResult> DeleteCustomerAsync(int id)
         {
-            string result = _Services.DeleteCustomer(id);
+           
+            var result = await _Services.DeleteCustomerAsync(id);
             return result == null ? NotFound() : Ok(result);
 
         }
@@ -88,7 +89,7 @@ namespace OnlineStore.Api.Controllers
         [ResponseCache(Location = ResponseCacheLocation.Client, Duration = 60)]
         public IActionResult GetCustomerByPhone(string phone)
         {
-            var customer = _Services.GetCustomerByPhone(phone);
+            var customer = _Services.GetCustomerByPhoneAsync(phone);
 
             return customer == null ? NotFound() : Ok(customer);
         }

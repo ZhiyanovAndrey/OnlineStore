@@ -19,11 +19,9 @@ namespace OnlineStore.Api.Models.Data
         public async Task<Customer> CreateCustomerAsync(CustomerModel customerModel)
         {
 
-
-          
-                Customer newCustomer = new Customer(customerModel);
-                await _db.Customers.AddAsync(newCustomer);
-                await _db.SaveChangesAsync();
+            Customer newCustomer = new Customer(customerModel);
+            await _db.Customers.AddAsync(newCustomer);
+            await _db.SaveChangesAsync();
 
             return newCustomer;
 
@@ -99,10 +97,10 @@ namespace OnlineStore.Api.Models.Data
 
         //	2.Метод получения клиента по номеру телефона.
 
-        public CustomerModel GetCustomerByPhone(string phone)
+        public async Task<CustomerModel> GetCustomerByPhoneAsync(string phone)
         {
 
-            var customer = _db.Customers.FirstOrDefault(c => c.Phone == phone);
+            Customer? customer = await _db.Customers.FirstOrDefaultAsync(c => c.Phone == phone);
             return customer?.ToDto();
         }
 
@@ -161,20 +159,17 @@ namespace OnlineStore.Api.Models.Data
 
 
 
-        public string DeleteCustomer(int id)
+        public async Task<Customer?> DeleteCustomerAsync(int id)
         {
-            Customer customer = _db.Customers.FirstOrDefault(c => c.Customerid == id);
+            Customer? customer = await _db.Customers.FirstOrDefaultAsync(c => c.Customerid == id);
             if (customer != null)
             {
-                return DoAction(delegate ()
-                {
-                    _db.Customers.Remove(customer);
-                    _db.SaveChanges();
 
-                });
+                _db.Customers.Remove(customer);
+                await _db.SaveChangesAsync();
 
             }
-            return $"Пользователь с номером {id} не найден";
+            return customer;//$"Пользователь с номером {id} не найден";
         }
 
 
