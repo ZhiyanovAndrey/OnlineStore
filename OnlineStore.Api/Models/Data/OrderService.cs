@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using OnlineStore.Models;
 
 namespace OnlineStore.Api.Models.Data
@@ -88,6 +89,14 @@ namespace OnlineStore.Api.Models.Data
 
             }
             return order; //$"Заказ с номером {id} не найден";
+        }
+
+
+
+        //	получение всех заказов
+        public async Task<IEnumerable<Order>> GetOrdersAsync()
+        {
+            return await _db.Orders.ToListAsync();
         }
 
     }

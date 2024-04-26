@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OnlineStore.Api.Models;
 using OnlineStore.Api.Models.Data;
 using OnlineStore.Models;
 
@@ -66,7 +67,12 @@ namespace OnlineStore.Api.Controllers
 
         }
 
-
+        [HttpGet("orders")]
+        [ResponseCache(Location = ResponseCacheLocation.Client, Duration = 30)]
+        public async Task<IEnumerable<Order>> GetOrders()
+        {
+            return await _OrderService.GetOrdersAsync();
+        }
 
 
 

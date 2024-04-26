@@ -15,8 +15,7 @@ namespace OnlineStore.Api.Models.Data
         }
 
 
-        //	Метод добавления клиента.
-        public async Task<Customer> CreateCustomerAsync(CustomerModel customerModel)
+            public async Task<Customer> CreateCustomerAsync(CustomerModel customerModel)
         {
 
             Customer newCustomer = new Customer(customerModel);
@@ -28,7 +27,16 @@ namespace OnlineStore.Api.Models.Data
 
         }
 
-       
+        public async Task<Customer?> DeleteCustomerAsync(int id)
+        {
+            Customer? customer = await _db.Customers.FirstOrDefaultAsync(c => c.Customerid == id);
+            if (customer != null)
+            {
+                _db.Customers.Remove(customer);
+                await _db.SaveChangesAsync();
+            }
+            return customer;
+        }
 
 
         //	2.Метод получения клиента по номеру телефона.
@@ -94,17 +102,6 @@ namespace OnlineStore.Api.Models.Data
 
 
 
-
-        public async Task<Customer?> DeleteCustomerAsync(int id)
-        {
-            Customer? customer = await _db.Customers.FirstOrDefaultAsync(c => c.Customerid == id);
-            if (customer != null)
-            {
-                _db.Customers.Remove(customer);
-                await _db.SaveChangesAsync();
-            }
-            return customer;
-        }
 
 
 
