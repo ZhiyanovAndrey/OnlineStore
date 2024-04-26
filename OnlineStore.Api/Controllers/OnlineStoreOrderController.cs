@@ -9,13 +9,19 @@ namespace OnlineStore.Api.Controllers
     public class OnlineStoreOrderController : ControllerBase
     {
 
+        private readonly OrderService _OrderService;
         private readonly Services _Services;
 
-        public OnlineStoreOrderController(OnlineStoreContext db)
+        public OnlineStoreOrderController(OnlineStoreContext db) // принимаем db в конструктор контроллера
         {
 
-            _Services = new Services(db);
+            _OrderService = new OrderService(db); // и передаем db в конструктор OrderService
+            _Services = new Services(db); 
+
+
+
         }
+
 
 
         [HttpPost]
@@ -26,7 +32,7 @@ namespace OnlineStore.Api.Controllers
             {
                 try
                 {
-                    var result = await _Services.CreateOrderAsync(orderModel);
+                    var result = await _OrderService.CreateOrderAsync(orderModel); // метод расширения CreateOrderAsync принимающий тип OrderService
                     return Ok(result);
 
                 }
@@ -44,7 +50,7 @@ namespace OnlineStore.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrderAsync(int id)
         {
-            var result = await _Services.DeleteOrder(id);
+            var result = await _OrderService.DeleteOrder(id);
             return result == null ? NotFound() : Ok();
 
         }
@@ -54,7 +60,7 @@ namespace OnlineStore.Api.Controllers
         //  отсортированный по дате создания.
         [HttpGet("[action]")]
         [ResponseCache(Location = ResponseCacheLocation.Client, Duration = 60)]
-        public async Task<IEnumerable<OrderModel>> GetOrdersByCustomeer(int CustomerId, DateTime dateStart, DateTime dateEnd) // или использовать onlyDate
+        public async Task<IEnumerable<OrderModel>> GetOrdersByCustomeer(int CustomerId, DateTime dateStart, DateTime dateEnd) 
         {
             return await _Services.GetOrderByCustomer(CustomerId, dateStart, dateEnd);
 

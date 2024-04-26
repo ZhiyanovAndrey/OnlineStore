@@ -52,25 +52,7 @@ namespace OnlineStore.Api.Controllers
             return BadRequest();
         }
 
-        public async Task<IActionResult> CreateOrderAsync([FromBody] OrderModel orderModel)
-        {
 
-            if (orderModel != null)
-            {
-                try
-                {
-                    var result = await _Services.CreateOrderAsync(orderModel);
-                    return Ok(result);
-
-                }
-                catch (Exception ex)
-                {
-
-                    return BadRequest(ex.Message);
-                }
-            }
-            return BadRequest();
-        }
 
 
         [HttpDelete("{id}")]

@@ -9,12 +9,14 @@ namespace OnlineStore.Api.Controllers
     public class OnlineStoreOrderPositionController : ControllerBase
     {
      
-        private readonly Services _Services;
+        private readonly OrderService _OrderService;
+
 
         public OnlineStoreOrderPositionController(OnlineStoreContext db)
         {
            
-            _Services = new Services(db);
+            _OrderService = new OrderService(db);
+
         }
 
 
@@ -29,7 +31,7 @@ namespace OnlineStore.Api.Controllers
             {
 
 
-                var result = _Services.CreateOrderPosition(orderPositionModel);
+                var result = _OrderService.CreateOrderPosition(orderPositionModel);
 
 
 
