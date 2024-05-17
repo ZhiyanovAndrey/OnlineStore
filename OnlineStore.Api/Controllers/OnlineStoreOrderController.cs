@@ -16,7 +16,7 @@ namespace OnlineStore.Api.Controllers
         public OnlineStoreOrderController(OnlineStoreContext db) // принимаем db в конструктор контроллера
         {
 
-            _OrderService = new OrderService(db); // и передаем db в конструктор OrderService
+            _OrderService = new OrderService(db); // и передаем db в конструктор OrderService 
             _Services = new Services(db); 
 
 
@@ -63,7 +63,16 @@ namespace OnlineStore.Api.Controllers
         [ResponseCache(Location = ResponseCacheLocation.Client, Duration = 60)]
         public async Task<IEnumerable<OrderModel>> GetOrdersByCustomeer(int CustomerId, DateTime dateStart, DateTime dateEnd) 
         {
+            try
+            {
             return await _Services.GetOrderByCustomer(CustomerId, dateStart, dateEnd);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
 
         }
 

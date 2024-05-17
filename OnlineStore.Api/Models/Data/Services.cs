@@ -54,7 +54,7 @@ namespace OnlineStore.Api.Models.Data
 
         public async Task<IEnumerable<Product>> GetProductsWithSort(string sortOrder)
         {
-            var products = _db.Products.Select(u => u);
+            IQueryable<Product> products = _db.Products.Select(u => u);
 
 
             switch (sortOrder)
@@ -86,17 +86,18 @@ namespace OnlineStore.Api.Models.Data
         // 4.Метод получения списка заказов по конкретному клиенту за выбранный временной период, отсортированный по дате создания.
         public async Task<IEnumerable<OrderModel>> GetOrderByCustomer(int CustomerId, DateTime dateStart, DateTime dateEnd)
         {
+            if (_db.Customers.FirstOrDefault(c => c.Customerid == CustomerId) != null)
+            {
+                throw new Exception($"Пользователь с номером {CustomerId} не найден");
+            }
 
-            //if (_db.Customers.FirstOrDefault(c => c.Customerid == CustomerId) != null)
-            //{
-            var orders = _db.Orders.Include(o => o.Customer)
+            IQueryable<Order> orders = _db.Orders.Include(o => o.Customer)
                 .Where(c => c.Customerid == CustomerId)
                 .Where(o => o.Orderdate >= dateStart.Date && o.Orderdate <= dateEnd.Date)
                 .OrderBy(o => o.Orderdate);
 
             return await orders.Select(d => d.ToDto()).ToListAsync();
-            //}
-            //return $"Пользователь с номером {CustomerId} не найден";
+
         }
 
 
