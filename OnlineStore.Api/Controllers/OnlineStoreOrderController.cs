@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using OnlineStore.Api.Models;
 using OnlineStore.Api.Models.Data;
 using OnlineStore.Models;
+using System.Data;
 
 namespace OnlineStore.Api.Controllers
 {
@@ -17,7 +19,7 @@ namespace OnlineStore.Api.Controllers
         {
 
             _OrderService = new OrderService(db); // и передаем db в конструктор OrderService 
-            _Services = new Services(db); 
+            _Services = new Services(db);
 
 
 
@@ -61,20 +63,22 @@ namespace OnlineStore.Api.Controllers
         //  отсортированный по дате создания.
         [HttpGet("[action]")]
         [ResponseCache(Location = ResponseCacheLocation.Client, Duration = 60)]
-        public async Task<IEnumerable<OrderModel>> GetOrdersByCustomeer(int CustomerId, DateTime dateStart, DateTime dateEnd) 
+        public async Task<IEnumerable<OrderModel>> GetOrdersByCustomeer(int CustomerId, DateTime dateStart, DateTime dateEnd)
         {
+
+
             try
             {
-            return await _Services.GetOrderByCustomer(CustomerId, dateStart, dateEnd);
-
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
+                return await _Services.GetOrderByCustomer(CustomerId, dateStart, dateEnd);
 
         }
+                catch (Exception ex)
+                {
+                throw;
+                //return ex.Message;
+                }
+}
+
 
         [HttpGet("orders")]
         [ResponseCache(Location = ResponseCacheLocation.Client, Duration = 30)]
