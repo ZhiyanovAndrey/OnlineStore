@@ -99,9 +99,25 @@ namespace OnlineStore.Api.Models.Data
 
             return await orders.Select(d => d.ToDto()).ToListAsync();
 
+        }       
+        
+        public async Task<IEnumerable<OrderModel>> GetOrderByCustomer(int CustomerId)
+        {
+            if (_db.Customers.FirstOrDefault(c => c.Customerid == CustomerId) == null)
+            {
+                throw new Exception($"Пользователь с номером {CustomerId} не найден");
+            }
+
+            IQueryable<Order> orders = _db.Orders.Include(o => o.Customer)
+                .Where(c => c.Customerid == CustomerId)             
+                .OrderBy(o => o.Orderdate);
+
+
+            return await orders.Select(d => d.ToDto()).ToListAsync();
+
         }
 
-
+      
 
 
 

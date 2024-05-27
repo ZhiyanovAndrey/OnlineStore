@@ -65,19 +65,22 @@ namespace OnlineStore.Api.Controllers
         [ResponseCache(Location = ResponseCacheLocation.Client, Duration = 60)]
         public async Task<IEnumerable<OrderModel>> GetOrdersByCustomeer(int CustomerId, DateTime dateStart, DateTime dateEnd)
         {
+            //if (dateStart&&dateEnd==0)
+            //{
 
+            //}
 
             try
             {
                 return await _Services.GetOrderByCustomer(CustomerId, dateStart, dateEnd);
 
-        }
-                catch (Exception ex)
-                {
+            }
+            catch (Exception ex)
+            {
                 throw;
                 //return ex.Message;
-                }
-}
+            }
+        }
 
 
         [HttpGet("orders")]
